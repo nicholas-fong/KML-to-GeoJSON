@@ -1,7 +1,7 @@
 # gpx-add-SRTM-elevation
 Adding SRTM elevation points to a gpx file
 
-Building on top of project [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python code takes a gpx file and matches up SRTM data files (GeoTIFF) stored on local drive and outputs to STDOUT.
+Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python code takes a gpx file and matches up SRTM data files (GeoTIFF) stored on local drive and outputs to STDOUT.
 
 Example Usage:
 
