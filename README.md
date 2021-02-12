@@ -11,6 +11,6 @@ python gpx-add-elevation.py Kowloon-Peak
 
 See SRTM-GeoTIFF on how to find and download USGS-SRTM GeoTIFF files.
 
-You can achieve the same with [GPS Visualizer](https://www.gpsvisualizer.com/).
+You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
-This python code offers an offline solution and the dataset is from SRTM.
+This python code offers an offline solution and the dataset is from SRTM. If you have a recorded gpx track from mobile phone, you can use this code to imporve the elelvation profile of the track (more accurate and generally smoother).
