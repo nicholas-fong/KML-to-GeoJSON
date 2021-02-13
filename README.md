@@ -13,4 +13,4 @@ python gpx-add-elevation.py Kowloon-Peak
 
 You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
-This python code offers an offline solution and the dataset is from SRTM. If you have a recorded gpx track from mobile phone, you can use this code to imporve the elelvation profile of the track (more accurate and generally smoother).
+This python code offers an offline solution and the dataset is from SRTM. If you have a recorded gpx track from mobile phone, you can use this code to cllean/imporve the elelvation profile of the gpx track (more accurate and generally smoother). 
