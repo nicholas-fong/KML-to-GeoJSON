@@ -9,7 +9,7 @@ download n22_e114.tif, Kowloon-Peak.gpx and gpx-add-elevation.py to a local dire
 
 python gpx-add-elevation.py Kowloon-Peak
 
-See [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF) on how to find and download USGS-SRTM GeoTIFF files.
+[How to download USGS-SRTM GeoTIFF files](https://github.com/nicholas-fong/gpx-add-SRTM-elevation/blob/main/EarthExplorer-howto.md)
 
 You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
