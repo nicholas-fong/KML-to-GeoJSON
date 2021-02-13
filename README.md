@@ -6,6 +6,7 @@ Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF)
 Example Usage:
 
 download n22_e114.tif, Kowloon-Peak.gpx and gpx-add-elevation.py to a local directory,
+
 python gpx-add-elevation.py Kowloon-Peak
 
 [How to download USGS-SRTM GeoTIFF files](https://github.com/nicholas-fong/gpx-add-SRTM-elevation/blob/main/EarthExplorer-howto.md)
