@@ -16,4 +16,4 @@ $Python gpx-add-elevation.py Kowloon-Peak > Kowloon-Peak-elevation.gpx
 
 You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
-This python code offers an offline solution. If you have recorded gpx tracks using mobile phones, you can use this code to clean up/smooth the elelvation profile of the gpx tracks. 
+This Python code offers an offline solution. If you have recorded gpx tracks using mobile phones, you can use this code to clean up/smooth the elelvation profile of the gpx tracks. 
