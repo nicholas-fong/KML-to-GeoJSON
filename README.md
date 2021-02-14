@@ -1,11 +1,15 @@
 # gpx-add-SRTM-elevation
 Adding SRTM elevation points to a gpx file
 
-Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python code takes a gpx file and matches up SRTM data files (GeoTIFF) stored on local drive and outputs to STDOUT.
-
-Example Usage:<br>
-download n22_e114.tif, Kowloon-Peak.gpx and gpx-add-elevation.py to a local directory,<br>
-python gpx-add-elevation.py Kowloon-Peak
+Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python code takes a gpx file and matches up SRTM-GeoTIFF data stored on local drive and outputs to STDOUT.
+```
+download gpx-add-elevation.py
+download n22_e114.tif
+download Kowloon-Peak.gpx
+$python gpx-add-elevation.py Kowloon-Peak
+(Kowloon Peak is one of many hiking destination in Hong Kong)
+(to save the gpx with elevation) $Python gpx-add-elevation.py Kowloon-Peak > new-track.gpx
+```
 
 [How to download USGS-SRTM GeoTIFF files](https://github.com/nicholas-fong/gpx-add-SRTM-elevation/blob/main/EarthExplorer-howto.md)
 
