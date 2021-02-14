@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="BRouter-1.6.1">
+  <trk>
+    <name>Kowloon-Peak</name>
+    <trkseg>
+      <trkpt lat="22.343801" lon="114.226748">
+        <ele>341</ele>
+      </trkpt>
+      <trkpt lat="22.343798" lon="114.22674">
+        <ele>341</ele>
+      </trkpt>
+      <trkpt lat="22.343736" lon="114.226672">
+        <ele>348</ele>
+      </trkpt>
+      <trkpt lat="22.34366" lon="114.226529">
+        <ele>348</ele>
+      </trkpt>
+      <trkpt lat="22.343629" lon="114.226499">
+        <ele>356</ele>
+      </trkpt>
+      <trkpt lat="22.343497" lon="114.226398">
+        <ele>356</ele>
+      </trkpt>
+      <trkpt lat="22.343437" lon="114.226313">
+        <ele>359</ele>
+      </trkpt>
+      <trkpt lat="22.343383" lon="114.22626">
+        <ele>359</ele>
+      </trkpt>
+      <trkpt lat="22.343198" lon="114.225985">
+        <ele>367</ele>
+      </trkpt>
+      <trkpt lat="22.343198" lon="114.225905">
+        <ele>374</ele>
+      </trkpt>
+      <trkpt lat="22.343179" lon="114.225848">
+        <ele>380</ele>
+      </trkpt>
+      <trkpt lat="22.343125" lon="114.225816">
+        <ele>380</ele>
+      </trkpt>
+      <trkpt lat="22.343051" lon="114.225727">
+        <ele>380</ele>
+      </trkpt>
+      <trkpt lat="22.343016" lon="114.2257">
+        <ele>380</ele>
+      </trkpt>
+      <trkpt lat="22.34299" lon="114.225658">
+        <ele>390</ele>
+      </trkpt>
+      <trkpt lat="22.342945" lon="114.225631">
+        <ele>390</ele>
+      </trkpt>
+      <trkpt lat="22.342884" lon="114.225579">
+        <ele>403</ele>
+      </trkpt>
+      <trkpt lat="22.342853" lon="114.225526">
+        <ele>403</ele>
+      </trkpt>
+      <trkpt lat="22.342839" lon="114.225469">
+        <ele>403</ele>
+      </trkpt>
+      <trkpt lat="22.342789" lon="114.22544">
+        <ele>403</ele>
+      </trkpt>
+      <trkpt lat="22.34275" lon="114.225362">
+        <ele>414</ele>
+      </trkpt>
+      <trkpt lat="22.342673" lon="114.225326">
+        <ele>414</ele>
+      </trkpt>
+      <trkpt lat="22.342582" lon="114.225271">
+        <ele>425</ele>
+      </trkpt>
+      <trkpt lat="22.342528" lon="114.22518">
+        <ele>425</ele>
+      </trkpt>
+      <trkpt lat="22.342379" lon="114.225118">
+        <ele>432</ele>
+      </trkpt>
+      <trkpt lat="22.342358" lon="114.22501">
+        <ele>435</ele>
+      </trkpt>
+      <trkpt lat="22.342295" lon="114.224897">
+        <ele>435</ele>
+      </trkpt>
+      <trkpt lat="22.342421" lon="114.224654">
+        <ele>433</ele>
+      </trkpt>
+      <trkpt lat="22.342428" lon="114.224642">
+        <ele>433</ele>
+      </trkpt>
+      <trkpt lat="22.342348" lon="114.224589">
+        <ele>445</ele>
+      </trkpt>
+      <trkpt lat="22.342302" lon="114.224518">
+        <ele>456</ele>
+      </trkpt>
+      <trkpt lat="22.342222" lon="114.224465">
+        <ele>456</ele>
+      </trkpt>
+      <trkpt lat="22.342121" lon="114.224333">
+        <ele>456</ele>
+      </trkpt>
+      <trkpt lat="22.342068" lon="114.22429">
+        <ele>502</ele>
+      </trkpt>
+      <trkpt lat="22.342031" lon="114.224205">
+        <ele>502</ele>
+      </trkpt>
+      <trkpt lat="22.342006" lon="114.224168">
+        <ele>502</ele>
+      </trkpt>
+      <trkpt lat="22.34201" lon="114.223981">
+        <ele>527</ele>
+      </trkpt>
+      <trkpt lat="22.341995" lon="114.22395">
+        <ele>527</ele>
+      </trkpt>
+      <trkpt lat="22.341964" lon="114.223913">
+        <ele>527</ele>
+      </trkpt>
+      <trkpt lat="22.341991" lon="114.22381">
+        <ele>527</ele>
+      </trkpt>
+      <trkpt lat="22.341957" lon="114.223728">
+        <ele>545</ele>
+      </trkpt>
+      <trkpt lat="22.34194" lon="114.223662">
+        <ele>545</ele>
+      </trkpt>
+      <trkpt lat="22.341966" lon="114.223587">
+        <ele>545</ele>
+      </trkpt>
+      <trkpt lat="22.34201" lon="114.223513">
+        <ele>545</ele>
+      </trkpt>
+      <trkpt lat="22.342016" lon="114.223433">
+        <ele>553</ele>
+      </trkpt>
+      <trkpt lat="22.341997" lon="114.223351">
+        <ele>553</ele>
+      </trkpt>
+      <trkpt lat="22.341947" lon="114.223317">
+        <ele>553</ele>
+      </trkpt>
+      <trkpt lat="22.341924" lon="114.223292">
+        <ele>553</ele>
+      </trkpt>
+      <trkpt lat="22.341919" lon="114.223227">
+        <ele>553</ele>
+      </trkpt>
+      <trkpt lat="22.341909" lon="114.223186">
+        <ele>558</ele>
+      </trkpt>
+      <trkpt lat="22.341856" lon="114.223106">
+        <ele>558</ele>
+      </trkpt>
+      <trkpt lat="22.341794" lon="114.223047">
+        <ele>576</ele>
+      </trkpt>
+      <trkpt lat="22.341783" lon="114.222966">
+        <ele>576</ele>
+      </trkpt>
+      <trkpt lat="22.341758" lon="114.222908">
+        <ele>564</ele>
+      </trkpt>
+      <trkpt lat="22.341728" lon="114.22286">
+        <ele>564</ele>
+      </trkpt>
+      <trkpt lat="22.341723" lon="114.222857">
+        <ele>564</ele>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
