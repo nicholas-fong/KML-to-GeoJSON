@@ -7,7 +7,7 @@ download gpx-add-elevation.py
 download n22_e114.tif
 download Kowloon-Peak.gpx
 $python gpx-add-elevation.py Kowloon-Peak
-(Kowloon Peak is one of many hiking destination in Hong Kong)
+(Kowloon Peak is one of many hiking destinations in Hong Kong)
 (to save the gpx with elevation) $Python gpx-add-elevation.py Kowloon-Peak > new-track.gpx
 ```
 
