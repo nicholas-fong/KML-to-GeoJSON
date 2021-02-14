@@ -11,7 +11,7 @@ $python gpx-add-elevation.py Kowloon-Peak
 (to save the gpx with elevation) $Python gpx-add-elevation.py Kowloon-Peak > new-track.gpx
 ```
 
-[How to download USGS-SRTM GeoTIFF files](https://github.com/nicholas-fong/gpx-add-SRTM-elevation/blob/main/EarthExplorer-howto.md)
+[How to download USGS-SRTM GeoTIFF files](/EarthExplorer-howto.md)
 
 You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
