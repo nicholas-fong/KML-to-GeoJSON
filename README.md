@@ -5,11 +5,9 @@ Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF)
 
 - download gpx-add-elevation.py
 - download n22_e114.tif
-- download Kowloon-Peak.gpx
+- download Kowloon-Peak.gpx (Kowloon Peak is one of many hiking destinations in Hong Kong)
 ```
 $python gpx-add-elevation.py Kowloon-Peak
-(Kowloon Peak is one of many hiking destinations in Hong Kong)
-(save the gpx with elevation) 
 $Python gpx-add-elevation.py Kowloon-Peak > Kowloon-Peak-elevation.gpx
 ```
 
