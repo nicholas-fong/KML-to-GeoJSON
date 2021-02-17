@@ -10,7 +10,7 @@ filename = (sys.argv[1]+'.gpx')
 with open( filename ) as infile:
     gpx = gpxpy.parse(infile)
 
-def which_tile ( latitude, longitude ):
+def find ( latitude, longitude ):
     if  ( latitude >= 0.0 and longitude >= 0.0 ):
         hemi, meri = "n", "e"
         t1 = f"{math.floor(latitude):02d}"
@@ -29,7 +29,7 @@ def which_tile ( latitude, longitude ):
         t2 = f"{math.floor(longitude):03d}"
     return( f"{hemi}{t1}_{meri}{t2}.tif" ) 
 
-def read_elevation(my_file, lat, lon):
+def read(my_file, lat, lon):
     data = gdal.Open(my_file)
     band1 = data.GetRasterBand(1)
     GT = data.GetGeoTransform()
@@ -47,19 +47,19 @@ def read_elevation(my_file, lat, lon):
 for track in gpx.tracks: 
     for segment in track.segments:
         for p in segment.points:
-            tiff_file=which_tile(p.latitude, p.longitude)
-            z = read_elevation(tiff_file,p.latitude,p.longitude)
+            my_file=find(p.latitude, p.longitude)
+            z = read(my_file,p.latitude,p.longitude)
             p.elevation = z
                 
 for routes in gpx.routes:
     for p in routes.points:
-        tiff_file=which_tile(p.latitude, p.longitude)
-        z = read_elevation(tiff_file,p.latitude,p.longitude)
+        my_file=find(p.latitude, p.longitude)
+        z = read(my_file,p.latitude,p.longitude)
         p.elevation = z
         
 for p in gpx.waypoints:
-    tiff_file=which_tile(p.latitude, p.longitude)
-    z = read_elevation(tiff_file,p.latitude,p.longitude)
+    my_file=find(p.latitude, p.longitude)
+    z = read(my_file,p.latitude,p.longitude)
     p.elevation = z
 
 print (gpx.to_xml())
