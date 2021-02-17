@@ -1,16 +1,16 @@
 ## gpx-add-SRTM-elevation
-Adding SRTM elevation points to a gpx file
+Append or update SRTM elevation points to waypoints, routes and tracks of gpx file.
 
-Building on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python code takes a gpx file and matches up SRTM-GeoTIFF data stored on local drive and outputs to STDOUT.
+Build on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python module takes a gpx file and matches up SRTM data (GeoTIFF) stored on local drive and outputs to STDOUT.
 
-Kowloon Peak is one of many hiking destinations in Hong Kong
+Kowloon Peak is one of many hiking destinations in Hong Kong.
 ```
 $python gpx-add-elevation.py Kowloon-Peak
 $Python gpx-add-elevation.py Kowloon-Peak > Kowloon-Peak-elevation.gpx
 ```
 
-You can achieve the same with online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
+You can achieve the same with an online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
 
-This Python code offers an offline solution. If you have recorded gpx tracks using mobile phones, you can use this code to clean up/smooth the elelvation profile of the gpx tracks. 
+This Python module offers an offline solution if the online tool does not cover your area of interest. If you have recorded gpx tracks using mobile phones, you can use this module to clean up/smooth out the elelvation profile. For example, if you recroded a gpx track walking on a beach, it is not uncommon to see the elevation profile shows you ocassionally walked under water. This Python module willl clean it up.
 
-[How to download USGS-SRTM GeoTIFF tiles](/EarthExplorer-howto.md)
+[USGS-SRTM GeoTIFF primer](/EarthExplorer-howto.md)
