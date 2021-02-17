@@ -4,8 +4,7 @@
 import sys
 import gpxpy
 import math
-import rasterio
-import numpy as np
+from osgeo import gdal
 
 filename = (sys.argv[1]+'.gpx')
 with open( filename ) as infile:
@@ -30,19 +29,17 @@ def which_tile ( latitude, longitude ):
         t2 = f"{math.floor(longitude):03d}"
     return( f"{hemi}{t1}_{meri}{t2}.tif" ) 
 
-def read_elevation(tiff_file, lat, lon):
-    src=rasterio.open(tiff_file)
-    array=src.read(1)
-    y =src.width-1
-    x =src.height-1
-    if ( lat >= 0.0 ):
-        x = round (x - lat%1 * x )
-        y = round ( lon%1 * y )
-        return array[ x, y ].astype(np.int16)
-    if ( lat < 0.0 ):
-        x = round ((1 - lat%1) * x )
-        y = round ( lon%1 * y )
-        return array[ x, y ].astype(np.int16)
+def read_elevation(my_file, lat, lon):
+    data = gdal.Open(my_file)
+    band1 = data.GetRasterBand(1)
+    GT = data.GetGeoTransform()
+    # call gdal's Affine Transformation (GetGeoTransform method)
+    # GetGeoTransform translates latitude, longitude to pixel indices
+    x_pixel_size = GT[1]
+    y_pixel_size = GT[5]
+    xP = int((lon - GT[0]) / x_pixel_size )
+    yL = int((lat - GT[3]) / y_pixel_size )
+    return ( int( band1.ReadAsArray(xP,yL,1,1) ) )
             
 # read gpx file and append elevation tags to 
 # the gpx waypoints, route points and track points
