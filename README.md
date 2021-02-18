@@ -1,4 +1,4 @@
-## gpx-add-SRTM-elevation
+## gpx-add-SRTM
 Append or update SRTM elevation points to waypoints, routes and tracks of gpx file.
 
 Build on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python module takes a gpx file and matches up SRTM data (GeoTIFF) stored on local drive and outputs to stdout.
