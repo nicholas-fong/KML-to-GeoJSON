@@ -1,7 +1,7 @@
 ## gpx-add-SRTM-elevation
 Append or update SRTM elevation points to waypoints, routes and tracks of gpx file.
 
-Build on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python module takes a gpx file and matches up SRTM data (GeoTIFF) stored on local drive and outputs to STDOUT.
+Build on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python module takes a gpx file and matches up SRTM data (GeoTIFF) stored on local drive and outputs to stdout.
 
 Kowloon Peak is one of many hiking destinations in Hong Kong.
 ```
