@@ -1,8 +1,5 @@
 # add elevation data to gpx track, route, and waypoints
 # GeoTiff files are assumed to be stored on local drive in the same directory as this .py code
-# For tiles downloaded from USGS EarthExplorer.
-# If using NASA ASTER tiles, change n e s w to uppercase N E S W and eliminate the underscore character
-
 
 import sys
 import gpxpy
@@ -15,22 +12,22 @@ with open( filename ) as infile:
 
 def find ( latitude, longitude ):
     if  ( latitude >= 0.0 and longitude >= 0.0 ):
-        hemi, meri = "n", "e"
+        hemi, meri = "N", "E"
         t1 = f"{math.floor(latitude):02d}"
         t2 = f"{math.floor(longitude):03d}"
     elif ( latitude >= 0.0 and longitude < 0.0 ):
-        hemi, meri = "n", "w"
+        hemi, meri = "N", "W"
         t1 = f"{math.floor(latitude):02d}"
         t2 = f"{math.ceil(abs(longitude)):03d}"
     elif ( latitude < 0.0 and longitude < 0.0 ):
-        hemi, meri = "s", "w"
+        hemi, meri = "S", "W"
         t1 = f"{math.ceil(abs(latitude)):02d}"
         t2 = f"{math.ceil(abs(longitude)):03d}"
     elif ( latitude < 0.0 and longitude >= 0.0 ):
-        hemi, meri = "s", "e"
+        hemi, meri = "S", "E"
         t1 = f"{math.ceil(abs(latitude)):02d}"
         t2 = f"{math.floor(longitude):03d}"
-    return( f"{hemi}{t1}_{meri}{t2}.tif" ) 
+    return( f"{hemi}{t1}{meri}{t2}.tif" ) 
 
 def read(my_file, lat, lon):
     data = gdal.Open(my_file)
