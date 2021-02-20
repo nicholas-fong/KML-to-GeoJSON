@@ -1,5 +1,8 @@
 # add elevation data to gpx track, route, and waypoints
-# GeoTiff files are stored on local drive
+# GeoTiff files are assumed to be stored on local drive in the same directory as this .py code
+# For tiles downloaded from USGS EarthExplorer.
+# If using NASA ASTER tiles, change n e s w to uppercase N E S W and eliminate the underscore character
+
 
 import sys
 import gpxpy
