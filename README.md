@@ -4,10 +4,10 @@ Append or update SRTM elevation points to waypoints, routes and tracks of gpx fi
 Build on top of [SRTM-GeoTIFF](https://github.com/nicholas-fong/SRTM-GeoTIFF), this Python module takes a gpx file and matches up SRTM data (GeoTIFF) stored on local drive and outputs to stdout.
 
 ### Example
-(Kowloon Peak is one of many hiking destinations in Hong Kong)
+(Grouse Grind is a popular hiking trail in Vancouver Canada)
 ```
-$python gpx-add-elevation.py Kowloon-Peak
-$Python gpx-add-elevation.py Kowloon-Peak > Kowloon-Peak-elevation.gpx
+$python gpx-add-elevation.py grouse-grind
+$Python gpx-add-elevation.py grouse-grind > grouse-grind-elevation.gpx
 ```
 
 You can achieve the same with an online tool [GPS Visualizer](https://www.gpsvisualizer.com/).
