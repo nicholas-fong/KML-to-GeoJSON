@@ -12,9 +12,10 @@ $python3 kml2geo.py
 GeoJSON to KML and vice versa, using GDAL's org2ogr:
 ```
 $sudo apt install gdal-bin
-$python3 ogr2ogr -f 'KML' -a_srs EPSG:4326 fountains.kml fountains.geojson
+
+$ogr2ogr -f 'LIBKML' -a_srs EPSG:4326 fountains.kml fountains.geojson
 $ogr2ogr -f 'LIBKML' foundtains.kml fountains.geojson
-$ogr2ogr fountains.kml fountains.geojson
+
 $ogr2ogr fountains.geojson fountains.kml
 ```
 From asc to GeoJSON and KML (see sample.asc)
