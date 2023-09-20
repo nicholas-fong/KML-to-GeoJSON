@@ -9,7 +9,8 @@ $python3 geo2kml.py
 $python3 kml2geo.py
 ```
 
-GeoJSON to KML and vice versa, using GDAL's org2ogr:
+GeoJSON to KML and vice versa, using GDAL's org2ogr:<br>
+(typically used to handle more complex data sets)
 ```
 $sudo apt install gdal-bin
 
@@ -26,7 +27,7 @@ Calculate distance between two geolocations using haversine distance formula
 ```
 $python3 distance.py
 ```
-From GPX to GeoJSON and KML:
+From GPX to GeoJSON and KML (in that order):
 ```
 $python3 gpx2geo.py grouse
 $python3 geo2kml.py grouse
