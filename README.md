@@ -1,7 +1,7 @@
 Python snippets to convert between KML and GeoJSON.
 
 KML to GeoJSON:<br>
-KML data structure can range from relatively straight forward to complex schema generated extensions. This snippet can convert simple KML placemarks to GeoJSON Point, LineString and Polygon features. 
+KML data structure can range from relatively straight forward to complex schema-generated extensions. This snippet can convert simple KML placemarks to GeoJSON Point, LineString and Polygon features. 
 
 
 GeoJSON to KML and vice versa:
