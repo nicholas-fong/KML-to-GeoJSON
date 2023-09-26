@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="1">
+        <Placemark id="3">
+            <name>Coal Harbour Park</name>
+            <Point id="2">
+                <coordinates>-123.12537,49.289977,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="5">
+            <name>David Lam Park - South west of playgrounds</name>
+            <Point id="4">
+                <coordinates>-123.123274,49.2725,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="7">
+            <name>Emery Barnes Park - Dog off-leash area</name>
+            <Point id="6">
+                <coordinates>-123.123781,49.277097,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="9">
+            <name>Andy Livingstone Park - South of soccer fields</name>
+            <Point id="8">
+                <coordinates>-123.10356,49.278057,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="11">
+            <name>CRAB Park at Portside</name>
+            <Point id="10">
+                <coordinates>-123.101806,49.28476,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="13">
+            <name>David Lam Park - South west of basketball courts</name>
+            <Point id="12">
+                <coordinates>-123.125705,49.271738,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="15">
+            <name>Emery Barnes Park - South west of playground</name>
+            <Point id="14">
+                <coordinates>-123.124267,49.276642,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="17">
+            <name>Harbour Green Park - In front of washrooms</name>
+            <Point id="16">
+                <coordinates>-123.121679,49.290107,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="19">
+            <name>Harbour Green Park - Viewpoint</name>
+            <Point id="18">
+                <coordinates>-123.123255,49.291334,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="21">
+            <name>Pioneer Place (Pigeon Park)</name>
+            <Point id="20">
+                <coordinates>-123.10449,49.281769,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="23">
+            <name>Bottle Filling Station location  Granville St Pumping Station</name>
+            <Point id="22">
+                <coordinates>-123.131579,49.273334,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="25">
+            <name>Fountain location Nelson &amp; Howe</name>
+            <Point id="24">
+                <coordinates>-123.123513,49.279672,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="27">
+            <name>Andy Livingstone Park - North of basketball court</name>
+            <Point id="26">
+                <coordinates>-123.106179,49.278917,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="29">
+            <name>Art Phillips Park (Discovery Square)</name>
+            <Point id="28">
+                <coordinates>-123.120924,49.286025,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="31">
+            <name>Coopers Park</name>
+            <Point id="30">
+                <coordinates>-123.113042,49.273915,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="33">
+            <name>Coopers Park - underneath bridge</name>
+            <Point id="32">
+                <coordinates>-123.114634,49.272904,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="35">
+            <name>Creekside Park</name>
+            <Point id="34">
+                <coordinates>-123.102994,49.27437,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="37">
+            <name>George Wainborn Park</name>
+            <Point id="36">
+                <coordinates>-123.129778,49.271908,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="39">
+            <name>Harbour Green Park - foot of Jervis Mews</name>
+            <Point id="38">
+                <coordinates>-123.123165,49.290645,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="41">
+            <name>Victory Square</name>
+            <Point id="40">
+                <coordinates>-123.110051,49.281951,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="43">
+            <name>Granville &amp; Robson</name>
+            <Point id="42">
+                <coordinates>-123.119937,49.281542,0.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

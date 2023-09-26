@@ -1,1 +1,299 @@
-{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"coordinates":[-123.12537005471899,49.28997735565045],"type":"Point"},"properties":{"mapid":"DFPB0023","name":"Fountain location:\nCoal Harbour Park","location":"near playground","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12537005471899,"lat":49.28997735565045}}},{"type":"Feature","geometry":{"coordinates":[-123.12327408831909,49.27249998987751],"type":"Point"},"properties":{"mapid":"DFPB0033","name":"Fountain location:\nDavid Lam Park - South west of playgrounds","location":"E area, near playground","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12327408831909,"lat":49.27249998987751}}},{"type":"Feature","geometry":{"coordinates":[-123.12378107952713,49.277097085980934],"type":"Point"},"properties":{"mapid":"DFPB0039","name":"Fountain location:\nEmery Barnes Park - Dog off-leash area","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12378107952713,"lat":49.277097085980934}}},{"type":"Feature","geometry":{"coordinates":[-123.105654,49.279211],"type":"Point"},"properties":{"mapid":"DFENG0806","name":"Temporary Misting Station location: Andy Livingston Park","location":"NW corner of Andy Livingston Park","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.105654,"lat":49.279211}}},{"type":"Feature","geometry":{"coordinates":[-123.118113,49.282333],"type":"Point"},"properties":{"mapid":"DFENG0708","name":"Temporary Fountain location: London Drugs","location":"733 Granville St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.118113,"lat":49.282333}}},{"type":"Feature","geometry":{"coordinates":[-123.104022,49.281473],"type":"Point"},"properties":{"mapid":"DFENG0605","name":"Temporary Handwashing Station location: 15 E Hastings","location":"15 E Hastings St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.104022,"lat":49.281473}}},{"type":"Feature","geometry":{"coordinates":[-123.102144,49.281547],"type":"Point"},"properties":{"mapid":"DFENG0602","name":"Temporary Handwashing Station location: E Hastings & Columbia","location":"101 E Hastings St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.102144,"lat":49.281547}}},{"type":"Feature","geometry":{"coordinates":[-123.123678,49.277664],"type":"Point"},"properties":{"mapid":"DFENG0606","name":"Temporary Handwashing Station location: The Gathering Place","location":"609 Helmcken St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.123678,"lat":49.277664}}},{"type":"Feature","geometry":{"coordinates":[-123.10355994686793,49.27805711332229],"type":"Point"},"properties":{"mapid":"DFPB0006","name":"Fountain location:\nAndy Livingstone Park - South of soccer fields","location":"north side of fieldhouse","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.10355994686793,"lat":49.27805711332229}}},{"type":"Feature","geometry":{"coordinates":[-123.10180591766984,49.28475995490833],"type":"Point"},"properties":{"mapid":"DFPB0030","name":"Fountain location:\nCRAB Park at Portside","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.10180591766984,"lat":49.28475995490833}}},{"type":"Feature","geometry":{"coordinates":[-123.12570510564845,49.2717379729765],"type":"Point"},"properties":{"mapid":"DFPB0032","name":"Fountain location:\nDavid Lam Park - South west of basketball courts","location":"near playground and tennis court","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12570510564845,"lat":49.2717379729765}}},{"type":"Feature","geometry":{"coordinates":[-123.12426708261285,49.27664197562022],"type":"Point"},"properties":{"mapid":"DFPB0040","name":"Fountain location:\nEmery Barnes Park - South west of playground","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12426708261285,"lat":49.27664197562022}}},{"type":"Feature","geometry":{"coordinates":[-123.12167903062401,49.29010735949297],"type":"Point"},"properties":{"mapid":"DFPB0062","name":"Fountain location:\nHarbour Green Park - In front of washrooms","location":"near spray pool","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12167903062401,"lat":49.29010735949297}}},{"type":"Feature","geometry":{"coordinates":[-123.1232550375787,49.291334384434094],"type":"Point"},"properties":{"mapid":"DFPB0060","name":"Fountain location:\nHarbour Green Park - Viewpoint","location":"west, by seawall","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.1232550375787,"lat":49.291334384434094}}},{"type":"Feature","geometry":{"coordinates":[-123.10448994330177,49.281769090820944],"type":"Point"},"properties":{"mapid":"DFPB0122","name":"Fountain location:\nPioneer Place (Pigeon Park)","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.10448994330177,"lat":49.281769090820944}}},{"type":"Feature","geometry":{"coordinates":[-123.131579,49.2733345],"type":"Point"},"properties":{"mapid":"DFENG0503","name":"Bottle Filling Station location: \nGranville St Pumping Station","location":"North side of sewage pumping station under Granville Bridge on bike route","maintainer":"Engineering","in_operation":"Year Round","pet_friendly":"N","photo_name":"GranvilleStPumpingStation.jpg","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.131579,"lat":49.2733345}}},{"type":"Feature","geometry":{"coordinates":[-123.123513,49.279672],"type":"Point"},"properties":{"mapid":"DFENG0038","name":"Fountain location:Nelson & Howe","location":"Southeast corner of Nelson & Howe","maintainer":"Engineering","in_operation":"Year Round","pet_friendly":"N","photo_name":"nelson_howe.jpg","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.123513,"lat":49.279672}}},{"type":"Feature","geometry":{"coordinates":[-123.099907,49.281431],"type":"Point"},"properties":{"mapid":"DFENG0703","name":"Temporary Fountain location: Main & E Hastings","location":"NW corner of E Hastings St and Main St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.099907,"lat":49.281431}}},{"type":"Feature","geometry":{"coordinates":[-123.10617896100499,49.278917130264055],"type":"Point"},"properties":{"mapid":"DFPB0005","name":"Fountain location:\nAndy Livingstone Park - North of basketball court","location":"by amphitheatre steps near bas","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.10617896100499,"lat":49.278917130264055}}},{"type":"Feature","geometry":{"coordinates":[-123.12092403672209,49.28602527394457],"type":"Point"},"properties":{"mapid":"DFPB0009","name":"Fountain location:\nArt Phillips Park (Discovery Square)","location":"NW plaza","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":"Discovery Square - drinking fountain - 2005.JPG","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12092403672209,"lat":49.28602527394457}}},{"type":"Feature","geometry":{"coordinates":[-123.11304201854614,49.27391462297168],"type":"Point"},"properties":{"mapid":"DFPB0028","name":"Fountain location:\nCoopers' Park","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.11304201854614,"lat":49.27391462297168}}},{"type":"Feature","geometry":{"coordinates":[-123.11463403132457,49.2729040014691],"type":"Point"},"properties":{"mapid":"DFPB0029","name":"Fountain location:\nCoopers' Park - underneath bridge, near basket","location":"underneath bridge, near basket","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":"Coopers Park - drinking fountain - 2005.JPG","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.11463403132457,"lat":49.2729040014691}}},{"type":"Feature","geometry":{"coordinates":[-123.10299407627441,49.27436956341148],"type":"Point"},"properties":{"mapid":"DFPB0031","name":"Fountain location:\nCreekside Park","location":null,"maintainer":"Parks","in_operation":null,"pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.10299407627441,"lat":49.27436956341148}}},{"type":"Feature","geometry":{"coordinates":[-123.12977813047853,49.271907974746064],"type":"Point"},"properties":{"mapid":"DFPB0054","name":"Fountain location:\nGeorge Wainborn Park","location":"NE corner near seawall","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12977813047853,"lat":49.271907974746064}}},{"type":"Feature","geometry":{"coordinates":[-123.12316503926135,49.29064536983438],"type":"Point"},"properties":{"mapid":"DFPB0061","name":"Fountain location:\nHarbour Green Park - foot of Jervis Mews","location":"foot of Jervis Mews","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.12316503926135,"lat":49.29064536983438}}},{"type":"Feature","geometry":{"coordinates":[-123.11005097846787,49.2819511927667],"type":"Point"},"properties":{"mapid":"DFPB0178","name":"Fountain location:\nVictory Square","location":"south corner of park","maintainer":"Parks","in_operation":"spring to fall","pet_friendly":null,"photo_name":"Victory Square - drinking fountain - 2008.JPG","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.11005097846787,"lat":49.2819511927667}}},{"type":"Feature","geometry":{"coordinates":[-123.102033,49.283301],"type":"Point"},"properties":{"mapid":"DFENG0801","name":"Temporary Misting Station location: Columbia & Powell","location":"NE corner of Columbia St & Powell St","maintainer":"Engineering","in_operation":"May-October","pet_friendly":"N","photo_name":null,"geo_local_area":"Downtown","geo_point_2d":{"lon":-123.102033,"lat":49.283301}}},{"type":"Feature","geometry":{"coordinates":[-123.119937,49.281542],"type":"Point"},"properties":{"mapid":"DFENG0019","name":"Fountain location:\nGranville & Robson","location":"Northwest corner of Granville & Robson","maintainer":"Engineering","in_operation":"Year Round","pet_friendly":"N","photo_name":"granville_robson.jpg","geo_local_area":"Downtown","geo_point_2d":{"lon":-123.119937,"lat":49.281542}}}]}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.12537,
+          49.289977,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Coal Harbour Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.123274,
+          49.2725,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "David Lam Park - South west of playgrounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.123781,
+          49.277097,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Emery Barnes Park - Dog off-leash area"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.10356,
+          49.278057,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Andy Livingstone Park - South of soccer fields"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.101806,
+          49.28476,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "CRAB Park at Portside"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.125705,
+          49.271738,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "David Lam Park - South west of basketball courts"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.124267,
+          49.276642,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Emery Barnes Park - South west of playground"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.121679,
+          49.290107,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Harbour Green Park - In front of washrooms"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.123255,
+          49.291334,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Harbour Green Park - Viewpoint"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.10449,
+          49.281769,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Pioneer Place (Pigeon Park)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.131579,
+          49.273334,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Bottle Filling Station location  Granville St Pumping Station"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.123513,
+          49.279672,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Fountain location Nelson & Howe"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.106179,
+          49.278917,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Andy Livingstone Park - North of basketball court"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.120924,
+          49.286025,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Art Phillips Park (Discovery Square)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.113042,
+          49.273915,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Coopers Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.114634,
+          49.272904,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Coopers Park - underneath bridge"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.102994,
+          49.27437,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Creekside Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.129778,
+          49.271908,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "George Wainborn Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.123165,
+          49.290645,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Harbour Green Park - foot of Jervis Mews"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.110051,
+          49.281951,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Victory Square"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.119937,
+          49.281542,
+          0.0
+        ]
+      },
+      "properties": {
+        "name": "Granville & Robson"
+      }
+    }
+  ]
+}
