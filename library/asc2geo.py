@@ -1,7 +1,7 @@
-# input a CSV (asc) file and create corresponding GeoJSON and KML files.
+# input a CSV (asc) file and create corresponding GeoJSON file.
 # CSV (asc) file has 3 columns, latitude, longitude and name of the geo location (Point)
 # the third column (name field) can be quoted or unquoted
-# create a .geojson file and a .kml file
+# create a .geojson file
 # assume CSV data is WGS84 latitude and longitude
 # quotation marks in third column (name field) are optional and are filtered out, but don't use comma in this field.
 # leading and trailing blanks in name filed are also filtered out
@@ -12,15 +12,12 @@ import sys
 import csv
 import json
 from geojson import FeatureCollection, Feature, Point
-import simplekml
 
 if len(sys.argv) < 2:
     print("Please enter a CSV file. File extension .asc is assumed") 
     sys.exit(1)
 
 basket = []             # empty basket to hold/collect features
-kml = simplekml.Kml()   # new KML object to hold/collect points/Placemark
-#folder = kml.newfolder(name='MyFolder')
 
 with open(sys.argv[1]+'.asc') as infile:
     reader = csv.reader(infile, delimiter=',')
@@ -32,14 +29,10 @@ with open(sys.argv[1]+'.asc') as infile:
             elev = 0.0    
             my_point=Point([lon,lat,elev])
             basket.append(Feature(geometry=my_point, properties={"name":my_name}))
-            kml.newpoint(name=my_name, coords=[(lon,lat,elev)])    
 
 geo_string = json.dumps( FeatureCollection(basket), indent=2, ensure_ascii=False )
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geo_string )
 
-kml.save(sys.argv[1]+".kml")
-
 print(geo_string)
-print(kml.kml())

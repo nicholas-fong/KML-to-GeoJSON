@@ -8,14 +8,6 @@ from geojson import FeatureCollection, Feature, Point, LineString, Polygon
 # kml coordinates, convert to text, split into elements, remove null elements, split, create list float, create LineString object
 # note: GeoJSON polygon coordinates requires extra square brackets  [[   ]] it is a list of lists
 
-print ("For simple kml files only. For more complex files, use ogr2ogr ")
-
-if len(sys.argv) < 2:
-    print("Enter a kml file to convert to GeoJSON ")
-    sys.exit(1)
-
-basket = []  # empty basket to hold/collect features
-
 def process_features(set_of_features):
     for j in set_of_features:           
         try:
@@ -55,7 +47,7 @@ def process_features(set_of_features):
             array_1 = list( item.strip() for item in raw_array)
             array_2 = [ item for item in array_1 if item != ''] 
             #now we have a list of strings, e.g.  ['-123,49', '-123,49', '-123,49']
-            #below is Method 1, very compact code, but too compact to be understood.
+            #below is Method 1, very compact code, a bit too hard to read.
             ######  my_line_object=LineString( list(map(float, item.split(','))) for item in array_2  )    
             # we need a list of list of floats, using simpler code:
             # to produce this list of floats [[-123,49], [-123,49], [-123,49]] 
@@ -84,8 +76,18 @@ def process_features(set_of_features):
         except:
             pass
 
+# main()
+
+print ("For simple kml files only. For more complex files, use 'ogr2ogr sample.geojson sample.kml' ")
+
+if len(sys.argv) < 2:
+    print("Enter a kml file to convert to GeoJSON ")
+    sys.exit(1)
+
 with open(sys.argv[1]+".kml") as f:
     root = parser.parse(f).getroot()
+
+basket = []  # empty basket to hold/collect features
 
 # kml comes in many different sizes and shapes and it gets out of control very quickly.
 try:
@@ -104,3 +106,4 @@ print(geojson_string)
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )
+
