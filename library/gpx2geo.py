@@ -1,6 +1,6 @@
 # gpx waypoint is mapped to geoJSON Point
 # gpx routes and gpx tracks are mapped to geojson LineString
-# gpx has no Polygons
+# gpx has no Polygons geometry
 # gpx elevation if exists is added as the third parameter in geometry
 
 import sys
@@ -26,6 +26,18 @@ for waypoint in gpx.waypoints:
     my_feature = Feature(geometry=my_point, properties={"name":varname})
     basket.append(my_feature)    
 
+for route in gpx.routes: 
+    varname = route.name
+    array=[]
+    for point in route.points:
+        if point.elevation is None:
+            array.append( (point.longitude, point.latitude) )    
+        else:
+            array.append( (point.longitude, point.latitude, point.elevation) ) 
+    my_line = LineString(array)
+    my_feature = Feature(geometry=my_line, properties={"name":varname})
+    basket.append(my_feature) 
+
 for track in gpx.tracks: 
     varname = track.name
     for segment in track.segments:
@@ -38,18 +50,6 @@ for track in gpx.tracks:
         my_line = LineString(array)
         my_feature = Feature(geometry=my_line, properties={"name":varname})
         basket.append(my_feature)   
-
-for route in gpx.routes: 
-    varname = route.name
-    array=[]
-    for point in route.points:
-        if point.elevation is None:
-            array.append( (point.longitude, point.latitude) )    
-        else:
-            array.append( (point.longitude, point.latitude, point.elevation) ) 
-    my_line = LineString(array)
-    my_feature = Feature(geometry=my_line, properties={"name":varname})
-    basket.append(my_feature)   
 
 geojson_string = json.dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
 print(geojson_string)

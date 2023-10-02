@@ -5,8 +5,9 @@ from geojson import FeatureCollection, Feature, Point, LineString, Polygon
 
 # tricky data type, tricky conversions and tricky element access: 
 # Polygon.outerBoundaryIs.LinearRing.coordinates
-# kml coordinates, convert to text, split into elements, remove null elements, split, create list float, create LineString object
-# note: GeoJSON polygon coordinates requires extra square brackets  [[   ]] it is a list of lists
+# kml coordinates: convert to text, split into elements, remove null elements, split, create list float, create LineString object
+# GeoJSON polygon coordinates requires extra square brackets  [[   ]] it is a list of lists = list of outer ring corrdinates
+# Polygon: first element of a list of lists is the list of Polygon outer ring coordinates
 
 def process_features(set_of_features):
     for j in set_of_features:           
@@ -46,11 +47,11 @@ def process_features(set_of_features):
 
             array_1 = list( item.strip() for item in raw_array)
             array_2 = [ item for item in array_1 if item != ''] 
-            #now we have a list of strings, e.g.  ['-123,49', '-123,49', '-123,49']
-            #below is Method 1, very compact code, a bit too hard to read.
-            ######  my_line_object=LineString( list(map(float, item.split(','))) for item in array_2  )    
-            # we need a list of list of floats, using simpler code:
-            # to produce this list of floats [[-123,49], [-123,49], [-123,49]] 
+            #we now have a list of strings, e.g.  ['-123,49', '-123,49', '-123,49'], but we need list of floats
+            #Method 1: very compact code, a bit too hard to read.
+            ##Method 1##  my_line_object=LineString( list(map(float, item.split(','))) for item in array_2  )    
+            # using simpler code:
+            # aim to produce a list of floats e.g. [[-123,49], [-123,49], [-123,49]] 
             magic=[]
             for item in array_2:
                 float_values = [float(val) for val in item.split(',')]
@@ -89,21 +90,21 @@ with open(sys.argv[1]+".kml") as f:
 
 basket = []  # empty basket to hold/collect features
 
-# kml comes in many different sizes and shapes and it gets out of control very quickly.
+# kml comes in many different sizes and shapes and it gets out of control very quickly, in that case
+# use GDAL ogr2ogr to convert
 try:
-    process_features(root.Document.Placemark) # minimalist KML
+    process_features(root.Document.Placemark) # nice clean minimalist KML
 except:
     try:
-        process_features(root.Document.Folder.Placemark) # Avenza KML export
+        process_features(root.Document.Folder.Placemark) # Avenza KML export has Folder structure
     except:
         try:
-            process_features(root.Document.Document.Placemark) # ogr2ogr "LIBKML" KML
+            process_features(root.Document.Document.Placemark) # ogr2ogr "LIBKML" KML driver has nested document folders
         except:
-            pass  # may come across other KML structures, add it here. If all else fails, use ogr2ogr
+            pass  # may come across other weird KML structures, add it here. If all else fails, use ogr2ogr
 
 geojson_string = json.dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
 print(geojson_string)
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )
-

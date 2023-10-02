@@ -37,7 +37,8 @@ for i in range(len(data['features'])):
 
     elif geom['type'] == 'Polygon':
         mypoly = kml.newpolygon(name=myname)
-        mypoly.outerboundaryis = geom['coordinates'][0] #first element of list of list is a list (outer ring of Polygon)
+        mypoly.outerboundaryis = geom['coordinates'][0] 
+        # Polygon: first element of a list of lists is the list of Polygon outer ring coordinates
 
 print(kml.kml())
 kml.save(sys.argv[1]+".kml")
