@@ -28,7 +28,7 @@ def process_features(set_of_features):
  
     for j in set_of_features:  # clumsy code but kind of works. 
     #Process basic kml style, Avenza kml style, brouter kml style, ogr2ogr kml style 
-    # add extra codes to handle mapshaper kml    
+    # add extra codes to handle Google kml export, mapshaper kml    
         try:
             raw_array = (j.LineString.coordinates).text.split(' ') # raw, remove white spaces and \n
             try:
@@ -40,7 +40,7 @@ def process_features(set_of_features):
             except:
                 time_str=''
 
-            if (len(raw_array)==1):  # mapshaper KML needs some extra processing
+            if (len(raw_array)==1):  # Google and mapshaper KML needs some extra processing
                 raw_array[0].replace('\n',  " "  )
                 temp_array = raw_array[0].split()
                 raw_array = [f'{coord}' for coord in temp_array]
