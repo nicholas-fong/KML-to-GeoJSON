@@ -2,9 +2,9 @@ import sys
 from pykml import parser
 import json
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon
-# parsed kml coordinates: convert to text, split into substrings, if a single line situation, break it up.
-# remove leading and trailing null strings. Result is a list of strings. 
-# using list comprehension, create a list floats from list of strings. 
+# parsed kml coordinates, convert to text, split into substrings, in a single line situation, break it up.
+# remove ultra messy separators (LF and space). Result is a "clean" list of strings. 
+# use list comprehension, create a list floats from list of strings. Feed it to LineString geometry constructor. 
 # GeoJSON polygon coordinates requires extra square brackets [[    ]] to make a list of lists. 
 # Polygon: first element of a list of lists is the list of Polygon outer-ring coordinates.
 # KML Polygon.outerBoundaryIs.LinearRing.coordinates
@@ -31,11 +31,11 @@ def process_features(set_of_features):
     # ogr2ogr kml style and mapshaper kml    
         try:
             coord_array = (j.LineString.coordinates).text.split("\n") # create list of substrings
-            if (len(coord_array)==1):               #some KML coordinates are expressed in one line
-                coord_array=coord_array[0].split()  #break up single line to str elements
-            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of leading null string
-            coord_array = [ item for item in coord_array if item !='' ]            # get rid of byproduct: tailing null string
-            # now have a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
+            if (len(coord_array)==1):               #some KML coordinates are arranged in one line
+                coord_array=coord_array[0].split()  #break up single line to list of str elements
+            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of very messy LF and whitespaces
+            coord_array = [ item for item in coord_array if item !='' ]            # do it one more time to remove residual null string
+            # finally a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
             # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
             # conventional approach:
             #   list_of_floats=[]
@@ -62,11 +62,11 @@ def process_features(set_of_features):
     for j in set_of_features:            
         try:
             coord_array = (j.Polygon.outerBoundaryIs.LinearRing.coordinates).text.split("\n")
-            if (len(coord_array)==1):               #some KML coordinates are expressed in one line
-                coord_array=coord_array[0].split()  #break up single line to str elements
-            coord_array = [ item.strip() for item in coord_array if item !='' ]   # get rid of leading null string
-            coord_array = [ item for item in coord_array if item !='' ]           # get rid of byproduct: tailing null string
-            # now have a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
+            if (len(coord_array)==1):               #some KML coordinates are arranged in one line
+                coord_array=coord_array[0].split()  #break up single line to list of str elements
+            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of very messy LF and whitespaces
+            coord_array = [ item for item in coord_array if item !='' ]            # do it one more time to remove residual null string
+            # finally a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
             # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
             my_poly = [[list(map(float, item.split(','))) for item in coord_array]]  #double square brackets needed
             try:
@@ -88,7 +88,7 @@ with open(sys.argv[1]+".kml") as f:
     root = parser.parse(f).getroot()
 # KML comes different sizes and shapes and it gets ugrly very quickly, in that case
 # use GDAL ogr2ogr to do the conversion
-basket = []  # yes, this is a global variable, to simply things
+basket = []  # yes this is a global variable: to make things simple.
 try:
     process_features(root.Document.Placemark) # nice clean minimalist KML structure
 except:
