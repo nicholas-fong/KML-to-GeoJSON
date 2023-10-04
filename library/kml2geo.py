@@ -2,11 +2,11 @@ import sys
 from pykml import parser
 import json
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon
-# parsed kml coordinates: convert to text, split into substrings, if one line, break it up.
-# remove leading and trailing null strings. Now end up with a list of strings. 
-# create a list float using list comprehension. 
-# GeoJSON polygon coordinates requires extra square brackets [[   ]] to make a list of lists. 
-# Polygon: first element of a list of lists is the list of Polygon outer ring coordinates.
+# parsed kml coordinates: convert to text, split into substrings, if a single line situation, break it up.
+# remove leading and trailing null strings. Result is a list of strings. 
+# using list comprehension, create a list floats from list of strings. 
+# GeoJSON polygon coordinates requires extra square brackets [[    ]] to make a list of lists. 
+# Polygon: first element of a list of lists is the list of Polygon outer-ring coordinates.
 # KML Polygon.outerBoundaryIs.LinearRing.coordinates
 
 def process_features(set_of_features):
@@ -31,19 +31,19 @@ def process_features(set_of_features):
     # ogr2ogr kml style and mapshaper kml    
         try:
             coord_array = (j.LineString.coordinates).text.split("\n") # create list of substrings
-            if (len(coord_array)==1):               #some KML coordinates come in one line
-                coord_array=coord_array[0].split()  #break it up to smaller chunks
-            coord_array =[item.strip() for item in coord_array if item !='']    # get rid of leading null string
-            coord_array =[item for item in coord_array if item !='']            # get rid of tailing null string
+            if (len(coord_array)==1):               #some KML coordinates are expressed in one line
+                coord_array=coord_array[0].split()  #break up single line to str elements
+            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of leading null string
+            coord_array = [ item for item in coord_array if item !='' ]            # get rid of byproduct: tailing null string
             # now have a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
             # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
-            # conservative approach:
+            # conventional approach:
             #   list_of_floats=[]
             #   for item in coord_array:
             #       xyz = [float(j) for j in item.split(',')]
             #       list_of_floats.append(xyz)
-            # using more compact list comprehension to convert to a list of floats
-            my_floats =  [list(map(float, item.split(','))) for item in coord_array]    
+            # use "list comprehension" to convert list of str to list of float
+            my_floats = [list(map(float, item.split(','))) for item in coord_array] 
             try:
                 label = str(j.name)
             except:
@@ -62,13 +62,13 @@ def process_features(set_of_features):
     for j in set_of_features:            
         try:
             coord_array = (j.Polygon.outerBoundaryIs.LinearRing.coordinates).text.split("\n")
-            if (len(coord_array)==1):               #some KML coordinates come in one line
-                coord_array=coord_array[0].split()  #break it up to smaller chunks
-            coord_array =[item.strip() for item in coord_array if item !='']    # get rid of leading null string
-            coord_array=([item for item in coord_array if item !=''])           # get rid of tailing null string
+            if (len(coord_array)==1):               #some KML coordinates are expressed in one line
+                coord_array=coord_array[0].split()  #break up single line to str elements
+            coord_array = [ item.strip() for item in coord_array if item !='' ]   # get rid of leading null string
+            coord_array = [ item for item in coord_array if item !='' ]           # get rid of byproduct: tailing null string
             # now have a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
             # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
-            my_poly =  [[list(map(float, item.split(','))) for item in coord_array]]  #double brackets needed
+            my_poly = [[list(map(float, item.split(','))) for item in coord_array]]  #double square brackets needed
             try:
                 label = str(j.name)
             except:
