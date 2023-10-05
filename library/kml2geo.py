@@ -3,11 +3,11 @@ from pykml import parser
 import json
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon
 # parsed kml coordinates, convert to text, split into substrings, in a single line situation, break it up.
-# remove ultra messy separators (LF and space). Result is a "clean" list of strings. 
+# clean up ultra messy separators (some use LF, some use LF and spaces). Result is a "clean" list of strings. 
 # use list comprehension, create a list floats from list of strings. Feed it to LineString geometry constructor. 
 # GeoJSON polygon coordinates requires extra square brackets [[    ]] to make a list of lists. 
 # Polygon: first element of a list of lists is the list of Polygon outer-ring coordinates.
-# KML Polygon.outerBoundaryIs.LinearRing.coordinates
+# KML tag Polygon.outerBoundaryIs.LinearRing.coordinates
 
 def process_features(set_of_features):
     for j in set_of_features:           
@@ -86,6 +86,7 @@ if len(sys.argv) < 2:
 
 with open(sys.argv[1]+".kml") as f:
     root = parser.parse(f).getroot()
+f.close()    
 # KML comes different sizes and shapes and it gets ugrly very quickly, in that case
 # use GDAL ogr2ogr to do the conversion
 basket = []  # yes this is a global variable: to make things simple.

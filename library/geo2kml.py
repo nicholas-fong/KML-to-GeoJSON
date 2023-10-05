@@ -10,6 +10,7 @@ if len(sys.argv) < 2:
 
 with open( sys.argv[1]+'.geojson', 'r') as infile:
    data = geojson.load ( infile )
+infile.close()   
 
 kml = simplekml.Kml()
 
@@ -26,6 +27,7 @@ for i in range(len(data['features'])):
                 myname = 'noname'
 
     geom = data['features'][i]['geometry']
+    node = geom['coordinates']
 
     if geom['type'] == 'Point':
         mypoint = kml.newpoint(name=myname)

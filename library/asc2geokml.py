@@ -20,7 +20,6 @@ if len(sys.argv) < 2:
 
 basket = []             # empty basket to hold/collect features
 kml = simplekml.Kml()   # new KML object to hold/collect points/Placemark
-#folder = kml.newfolder(name='MyFolder')
 
 with open(sys.argv[1]+'.asc') as infile:
     reader = csv.reader(infile, delimiter=',')
@@ -34,6 +33,7 @@ with open(sys.argv[1]+'.asc') as infile:
             basket.append(Feature(geometry=my_point, properties={"name":my_name}))
             kml.newpoint(name=my_name, coords=[(lon,lat,elev)])    
 
+infile.close()
 geo_string = json.dumps( FeatureCollection(basket), indent=2, ensure_ascii=False )
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:

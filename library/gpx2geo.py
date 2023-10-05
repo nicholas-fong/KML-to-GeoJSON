@@ -11,6 +11,7 @@ import json
 
 with open( sys.argv[1]+'.gpx' ) as infile:
     gpx = gpxpy.parse(infile)
+infile.close()    
     
 basket = []    
 

@@ -1,7 +1,5 @@
 import math
 
-#python code in java class-method style
-
 class HaversineCalculator:
     EARTH_RADIUS = 6371000.0  # Earth's radius
 
