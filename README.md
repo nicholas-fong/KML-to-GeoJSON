@@ -4,10 +4,15 @@ KML to GeoJSON:<br>
 
 KML data structure can range from relatively straight forward to complex gx prefix namespace extensions. This snippet convert simple KML (without gx prefix namespace extensions) placemarks to GeoJSON Point, LineString and Polygon. 
 
-GeoJSON to KML and vice versa:
+GeoJSON to KML and KML to GeoJSON:
 ```
 $python3 geo2kml.py
 $python3 kml2geo.py
+```
+
+KML to KML, recreate a basic KML file without bells and whistles:
+```
+$python3 kml2kml.py
 ```
 
 GeoJSON to KML and KML to GeoJSON, using GDAL's org2ogr:<br>
@@ -20,7 +25,7 @@ $ogr2ogr -f 'LIBKML' foundtains.kml fountains.geojson
 
 $ogr2ogr fountains.geojson fountains.kml
 ```
-From asc to GeoJSON and KML (see sample.asc)
+From asc file, create GeoJSON file and KML file (see sample.asc)
 ```
 $python3 asc2geokml.py sample
 ```
