@@ -10,7 +10,7 @@ $python3 geo2kml.py
 $python3 kml2geo.py
 ```
 
-KML to KML, recreate a basic KML file without bells and whistles:
+KML to KML: regenerate a minimalist KML file without bells and whistles:
 ```
 $python3 kml2kml.py
 ```
