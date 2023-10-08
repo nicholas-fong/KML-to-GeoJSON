@@ -1,108 +1,64 @@
 import sys
-from pykml import parser
-import json
-from geojson import FeatureCollection, Feature, Point, LineString, Polygon
-# parsed kml coordinates, convert to text, split into substrings, in a single line situation, break it up.
-# clean up ultra messy separators (some use LF, some use LF and spaces). Result is a "clean" list of strings. 
-# use list comprehension, create a list floats from list of strings. Feed it to LineString geometry constructor. 
-# GeoJSON polygon coordinates requires extra square brackets [[    ]] to make a list of lists. 
-# Polygon: first element of a list of lists is the list of Polygon outer-ring coordinates.
-# KML tag Polygon.outerBoundaryIs.LinearRing.coordinates
+import xml.etree.ElementTree as ET
+from geojson import FeatureCollection, Feature, Point, LineString, Polygon, dumps
 
-def process_features(set_of_features):
-    for j in set_of_features:           
-        try:
-            lonlat = (j.Point.coordinates).text.split(',')
-            try:
-                label = str(j.name)
-            except:
-                label = ''    
-            try:
-                my_point=Point([float(lonlat[0]),float(lonlat[1]),float(lonlat[2])])
-            except:
-                my_point=Point([float(lonlat[0]),float(lonlat[1])])
-            #convert to a gemoetry Point object ==> dictionary with key "coordinates"
-            basket.append(Feature(geometry=my_point, properties={"name":label}))
-        except:
-            pass
- 
-    for j in set_of_features:  
-    # Process minimalist kml style, Google kml style, Avenza kml style, brouter kml style, 
-    # ogr2ogr kml style and mapshaper kml    
-        try:
-            coord_array = (j.LineString.coordinates).text.split("\n") # create list of substrings
-            if (len(coord_array)==1):               #some KML coordinates are arranged in one line
-                coord_array=coord_array[0].split()  #break up single line to list of str elements
-            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of very messy LF and whitespaces
-            coord_array = [ item for item in coord_array if item !='' ]            # do it one more time to remove residual null string
-            # finally a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
-            # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
-            # conventional approach:
-            #   list_of_floats=[]
-            #   for item in coord_array:
-            #       xyz = [float(j) for j in item.split(',')]
-            #       list_of_floats.append(xyz)
-            # use "list comprehension" to convert list of str to list of float
-            my_floats = [list(map(float, item.split(','))) for item in coord_array] 
-            try:
-                label = str(j.name)
-            except:
-                label = ''
-            try:
-                time_str=str(j.TimeStamp.when)
-            except:
-                time_str=''
-            if (time_str == "none"):
-                basket.append(Feature(geometry=LineString(my_floats),properties={"name":label} ))
-            else:
-                basket.append(Feature(geometry=LineString(my_floats),properties={"name":label,"timestamp":time_str} ))      
-        except:
-            pass
+kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
+# Define namespaces (KML uses namespaces)
+basket=[]
 
-    for j in set_of_features:            
-        try:
-            coord_array = (j.Polygon.outerBoundaryIs.LinearRing.coordinates).text.split("\n")
-            if (len(coord_array)==1):               #some KML coordinates are arranged in one line
-                coord_array=coord_array[0].split()  #break up single line to list of str elements
-            coord_array = [ item.strip() for item in coord_array if item !='' ]    # get rid of very messy LF and whitespaces
-            coord_array = [ item for item in coord_array if item !='' ]            # do it one more time to remove residual null string
-            # finally a list of strings: e.g.  ['-123,49', '-123,49', '-123,49']
-            # convert to a list of floats: e.g. [[-123,49], [-123,49], [-123,49]] 
-            my_poly = [[list(map(float, item.split(','))) for item in coord_array]]  #double square brackets needed
-            try:
-                label = str(j.name)
-            except:
-                label = ''      
-            basket.append(Feature(geometry=Polygon(my_poly),properties={"name":label}  ))  
-        except:
-            pass
+# function to extract coordinates from a geometry element, returns an array of tuples
+def extract_coordinates(geometry_element):
+    coordinates_elem = geometry_element.find('kml:coordinates', namespaces=kml_namespace)
+    if coordinates_elem is not None:
+        # coordinates is a list of strings
+        coordinates = coordinates_elem.text.strip().split()
+        # convert to a list of tuples
+        list_of_tuples = [tuple(map(float, item.split(','))) for item in coordinates]
+        return list_of_tuples
 
 # main()
-print ("For simple kml files only. For more complex files, use 'ogr2ogr sample.geojson sample.kml' ")
+# For more complex KML files, use GDAL's 'ogr2ogr' : sudo apt install gdal-bin
 
-if len(sys.argv) < 2:
-    print("Enter a kml file to convert to GeoJSON ")
-    sys.exit(1)
+with open(sys.argv[1]+".kml") as infile:
+    tree = ET.parse(infile)
+root = tree.getroot()
+infile.close()  # not really necessary. For peace of mind
 
-with open(sys.argv[1]+".kml") as f:
-    root = parser.parse(f).getroot()
-f.close()    
-# KML comes different sizes and shapes and it gets ugrly very quickly, in that case
-# use GDAL ogr2ogr to do the conversion
-basket = []  # yes this is a global variable: to make things simple.
-try:
-    process_features(root.Document.Placemark) # nice clean minimalist KML structure
-except:
+# Iterate through Placemark elements
+for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
+    name_elem = placemark.find('kml:name', namespaces=kml_namespace)
+    name = name_elem.text.strip() if name_elem is not None else 'Unnamed'
     try:
-        process_features(root.Document.Folder.Placemark) # Google, Avenza KML include Folder structure
+        time_stamp = placemark.find('.//kml:TimeStamp/kml:when', namespaces=kml_namespace).text.strip()
     except:
-        try:
-            process_features(root.Document.Document.Placemark) # ogr2ogr LIBKML drv has nested document folders
-        except:
-            pass  # may come across other wild KML structures, add it here if possible. If all else fails, use ogr2ogr
+        time_stamp = None
 
-geojson_string = json.dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
-print(geojson_string)
+    # Check for geometry types: Point, LineString, or Polygon
+    point = placemark.find('.//kml:Point', namespaces=kml_namespace)
+    line_string = placemark.find('.//kml:LineString', namespaces=kml_namespace)
+    polygon = placemark.find('.//kml:Polygon', namespaces=kml_namespace)
+
+    if point is not None:
+        my_point = extract_coordinates(point)
+        basket.append(Feature(geometry=Point(my_point[0]), properties={"name":name}))
+
+    elif line_string is not None:
+        my_line = extract_coordinates(line_string)
+        basket.append(Feature(geometry=LineString(my_line),properties={"name":name,"timestamp":time_stamp} )) 
+
+    elif polygon is not None:
+        all_rings = []
+        outer_ring = polygon.find('.//kml:outerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
+        all_rings.append(extract_coordinates(outer_ring))
+        
+        inner_rings = polygon.findall('.//kml:innerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
+        for inner_ring_elem in inner_rings:                
+            all_rings.append(extract_coordinates(inner_ring_elem))
+        
+        basket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
+
+geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
+#print(geojson_string)
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )

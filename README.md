@@ -6,8 +6,8 @@ KML data structure can range from relatively straight forward to complex gx pref
 
 GeoJSON to KML and KML to GeoJSON:
 ```
-$python3 geo2kml.py
 $python3 kml2geo.py
+$python3 geo2kml.py
 ```
 
 KML to KML: regenerate a minimalist KML file without bells and whistles:
@@ -15,17 +15,13 @@ KML to KML: regenerate a minimalist KML file without bells and whistles:
 $python3 kml2kml.py
 ```
 
-GeoJSON to KML and KML to GeoJSON, using GDAL's org2ogr:<br>
-(can be used to handle more complex gx prefix namespace extensions)
+KML with more complex gx prefix namespace, use GDAL's org2ogr:
 ```
 $sudo apt install gdal-bin
-
-$ogr2ogr -f 'LIBKML' -a_srs EPSG:4326 fountains.kml fountains.geojson
-$ogr2ogr -f 'LIBKML' foundtains.kml fountains.geojson
-
+$ogr2ogr fountains.kml fountains.geojson
 $ogr2ogr fountains.geojson fountains.kml
 ```
-From asc file, create GeoJSON file and KML file (see sample.asc)
+From asc file, create GeoJSON and KML (using sample.asc)
 ```
 $python3 asc2geokml.py sample
 ```
