@@ -53,7 +53,7 @@ for track in gpx.tracks:
         basket.append(my_feature)   
 
 geojson_string = json.dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
-print(geojson_string)
+#print(geojson_string)
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )

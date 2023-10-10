@@ -2,45 +2,39 @@ import sys
 import geojson
 import simplekml
 
-# this script does not use geopandas module hence it runs faster
-
-if len(sys.argv) < 2:
-    print("Please enter a geojson file to convert to kml ")
-    sys.exit(1)
+# minimalist GeoJSON to KML converter
 
 with open( sys.argv[1]+'.geojson', 'r') as infile:
    data = geojson.load ( infile )
-infile.close()   
 
 kml = simplekml.Kml()
 
-for i in range(len(data['features'])):
-    try:
-        myname = data['features'][i]['properties']['name']
-    except:
-        try:
-            myname = data['features'][i]['properties']['Name']
-        except:
-            try:
-                myname = data['features'][i]['properties']['NAME']
-            except:    
-                myname = 'noname'
+if 'features' in data:
+    features = data['features']
+    
+    for feature in features:
+        geometry_type = feature['geometry'].get('type', None)
+        coordinates = feature['geometry'].get('coordinates', None)
+        properties = feature.get('properties', None)
 
-    geom = data['features'][i]['geometry']
-    node = geom['coordinates']
+        if geometry_type == 'Point':
+            mypoint = kml.newpoint()
+            mypoint.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
+            mypoint.coords = [coordinates]
 
-    if geom['type'] == 'Point':
-        mypoint = kml.newpoint(name=myname)
-        mypoint.coords = [geom['coordinates']]
+        if geometry_type == 'LineString':
+            myline =  kml.newlinestring()
+            myline.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
+            myline.timestamp.when = properties.get('timestamp') or properties.get('Timestamp') or properties.get('TimeStamp')
+            myline.coords = coordinates
 
-    elif geom['type'] == 'LineString':
-        myline = kml.newlinestring(name=myname)
-        myline.coords = geom['coordinates']
+        if geometry_type == 'Polygon':
+            mypoly = kml.newpolygon()
+            mypoly.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
+            mypoly.outerboundaryis = coordinates[0]
+            # Polygon: first element of a list of lists of list is the Polygon outer ring coordinates
+            # simplekml only supports one inner ring, hence decide to not implement inner rings
 
-    elif geom['type'] == 'Polygon':
-        mypoly = kml.newpolygon(name=myname)
-        mypoly.outerboundaryis = geom['coordinates'][0] 
-        # Polygon: first element of a list of lists is the list of Polygon outer ring coordinates
-
-print(kml.kml())
+#print(kml.kml())
 kml.save(sys.argv[1]+".kml")
+
