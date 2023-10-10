@@ -38,15 +38,15 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
     line_string = placemark.find('.//kml:LineString', namespaces=kml_namespace)
     polygon = placemark.find('.//kml:Polygon', namespaces=kml_namespace)
 
-    if point is not None:
+    if point:
         my_point = extract_coordinates(point)
         basket.append(Feature(geometry=Point(my_point[0]), properties={"name":name}))
 
-    elif line_string is not None:
+    elif line_string:
         my_line = extract_coordinates(line_string)
         basket.append(Feature(geometry=LineString(my_line),properties={"name":name,"timestamp":time_stamp} )) 
 
-    elif polygon is not None:
+    elif polygon:
         all_rings = []
         outer_ring = polygon.find('.//kml:outerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
         all_rings.append(extract_coordinates(outer_ring))
