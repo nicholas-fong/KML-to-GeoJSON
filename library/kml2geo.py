@@ -3,7 +3,8 @@ import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, dumps
 
 kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
-# Define namespaces (KML uses namespaces)
+gx_namespace = '{http://www.google.com/kml/ext/2.2}'
+# Define namespaces (KML uses kml namespaces and gx namespaces)
 basket=[]
 
 # function to extract coordinates from a geometry element, returns an array of tuples
@@ -22,7 +23,6 @@ def extract_coordinates(geometry_element):
 with open(sys.argv[1]+".kml") as infile:
     tree = ET.parse(infile)
 root = tree.getroot()
-infile.close()  # not really necessary. For peace of mind
 
 # Iterate through Placemark elements
 for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
@@ -54,11 +54,21 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
         inner_rings = polygon.findall('.//kml:innerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
-        
         basket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
 
-geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
-#print(geojson_string)
+    # check for <gx:Track> tags
+    gx_track = placemark.find(".//{http://www.google.com/kml/ext/2.2}Track")
+    if gx_track:
+        gx_coord_element = gx_track.findall("{http://www.google.com/kml/ext/2.2}coord")  #<gx:coord>
+        list_floats=[]
+        for coord in gx_coord_element:
+            my_xyz = list(map(float, coord.text.strip().split()))  # list of 3 floats: longitude, latitude, altitude
+            list_floats.append(my_xyz)  # collect all the track points
+        list_of_tuples = [tuple(lst) for lst in list_floats]  # convert to list of tuples; for use by LineString constructor    
+        basket.append(Feature(geometry=LineString(list_of_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
+geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
+
+#print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )
