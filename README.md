@@ -2,7 +2,7 @@
 
 KML to GeoJSON:<br>
 
-KML data structure can range from relatively straight forward to more complex gx prefix namespace extensions. This snippet convert simple KML placemarks to GeoJSON Point, LineString and Polygon. It can handle KML gx:Track as well. 
+KML data structure can range from relatively straight forward to more complex namespace extensions. This snippet converts KML placemarks to GeoJSON Point, LineString and Polygon. It can parse KML gx:Track as well. 
 
 GeoJSON to KML and KML to GeoJSON:
 ```
@@ -10,7 +10,7 @@ $python3 kml2geo.py
 $python3 geo2kml.py
 ```
 
-KML to KML: regenerate a minimalist KML file without bells and whistles, gx:Track is not implemented.
+KML to KML: regenerate a minimalist KML file without bells and whistles. gx:Track is not implemented.
 ```
 $python3 kml2kml.py
 ```
