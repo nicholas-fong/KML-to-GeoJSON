@@ -2,7 +2,7 @@
 
 KML to GeoJSON:<br>
 
-KML data structure can range from relatively straight forward to more complex namespace extensions. This snippet converts KML placemarks to GeoJSON Point, LineString and Polygon. It can parse KML gx:Track as well. 
+KML data structure can range from relatively straight forward to more complex namespace extensions. These snippets convert KML placemarks to GeoJSON Point, LineString and Polygon. It can parse KML gx:Track as well. 
 
 GeoJSON to KML and KML to GeoJSON:
 ```
