@@ -2,9 +2,10 @@ import sys
 import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, dumps
 
-kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
-gx_namespace = '{http://www.google.com/kml/ext/2.2}'
 # Define namespaces (KML uses kml namespaces and gx namespaces)
+kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
+gx_namespace =  {'gx': 'http://www.google.com/kml/ext/2.2'}
+
 basket=[]
 
 # function to extract coordinates from a geometry element, returns an array of tuples
@@ -28,10 +29,8 @@ root = tree.getroot()
 for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
     name_elem = placemark.find('kml:name', namespaces=kml_namespace)
     name = name_elem.text.strip() if name_elem is not None else 'Unnamed'
-    try:
-        time_stamp = placemark.find('.//kml:TimeStamp/kml:when', namespaces=kml_namespace).text.strip()
-    except:
-        time_stamp = None
+    time_elem = placemark.find('.//kml:TimeStamp/kml:when', namespaces=kml_namespace)
+    time_stamp = time_elem.text.strip() if time_elem is not None else None
 
     # Check for geometry types: Point, LineString, or Polygon
     point = placemark.find('.//kml:Point', namespaces=kml_namespace)
@@ -56,18 +55,20 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
             all_rings.append(extract_coordinates(inner_ring_elem))
         basket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
 
-    # check for <gx:Track> tags
-    gx_track = placemark.find(".//{http://www.google.com/kml/ext/2.2}Track")
-    if gx_track:
-        gx_coord_element = gx_track.findall("{http://www.google.com/kml/ext/2.2}coord")  #<gx:coord>
-        list_floats=[]
-        for coord in gx_coord_element:
-            my_xyz = list(map(float, coord.text.strip().split()))  # list of 3 floats: longitude, latitude, altitude
-            list_floats.append(my_xyz)  # collect all the track points
-        list_of_tuples = [tuple(lst) for lst in list_floats]  # convert to list of tuples; for use by LineString constructor    
-        basket.append(Feature(geometry=LineString(list_of_tuples),properties={"name":name,"timestamp":time_stamp} ))
+    # Look for <gx:Track> <gx:coord>
+    gx_track = placemark.find("{http://www.google.com/kml/ext/2.2}Track")
+    if gx_track is not None:
+        gx_coord = gx_track.findall("{http://www.google.com/kml/ext/2.2}coord")  #<gx:coord>
+        list_coords=[]
+        for coord in gx_coord:
+            my_xyz = list(map(float, coord.text.split()))  # coord is a list of 3 floats: longitude, latitude, altitude
+            list_coords.append(my_xyz)  # collect all the track points
+        list_tuples = [tuple(lst) for lst in list_coords]  # convert to list of tuples before feedint to constructor    
+    basket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
+geojson_string = dumps(FeatureCollection(basket), ensure_ascii=False)
+# defaults to one line print, to save space.
+# use geo2geo.py to do pretty printing.
 
 #print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
