@@ -1,57 +1,70 @@
+import json
 import sys
-import geojson
-import simplekml
+import xml.etree.ElementTree as ET
+import xml.dom.minidom
 
-# minimalist GeoJSON to KML converter
+# Load your GeoJSON data from a file
+with open( sys.argv[1]+'.geojson', 'r') as infile:
+   geojson_data = json.load ( infile )
 
-user_input = input ("Lossy conversion: this converts Polygon's multiple interior rings to only one interior ring, proceed Y or N? ").strip().upper()
+# Create a KML root element
+kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
 
-if user_input == 'Y':
+# Function to convert GeoJSON features to KML
+def geojson_feature_to_kml(feature):
+    placemark = ET.SubElement(kml, 'Placemark')
 
-    with open( sys.argv[1]+'.geojson', 'r') as infile:
-        data = geojson.load ( infile )
+    yes_property = feature.get('properties', None)
+    if yes_property:
+        # Extract the name property
+        name = feature['properties'].get('name', '')
+        if name:
+            name_element = ET.SubElement(placemark, 'name')
+            name_element.text = name
 
-    kml = simplekml.Kml()
+        # Extract the timestamp in properties field if it exists
+        timestamp = feature['properties'].get('timestamp', None)
+        if timestamp is None:
+            timestamp = feature['properties'].get('TimeStamp', None)
+        if timestamp:
+            timestamp_element = ET.SubElement(placemark, 'TimeStamp')
+            when_element = ET.SubElement(timestamp_element, 'when')
+            when_element.text = timestamp
 
-    if 'features' in data:
-        features = data['features']
+    if feature['geometry']['type'] == 'Point':
+        point = ET.SubElement(placemark, 'Point')
+        coordinates = ET.SubElement(point, 'coordinates')
+        coordinates.text = ','.join(map(str, feature['geometry']['coordinates']))
+    elif feature['geometry']['type'] == 'LineString':
+        linestring = ET.SubElement(placemark, 'LineString')
+        coordinates = ET.SubElement(linestring, 'coordinates')
+        coordinates.text = ' '.join(','.join(map(str, coords)) for coords in feature['geometry']['coordinates'])
+    elif feature['geometry']['type'] == 'Polygon':
+        polygon = ET.SubElement(placemark, 'Polygon')
+        outer = ET.SubElement(polygon, 'outerBoundaryIs')
+        linear_ring = ET.SubElement(outer, 'LinearRing')
+        coordinates = ET.SubElement(linear_ring, 'coordinates')
+        coordinates.text = ' '.join(','.join(map(str, coords)) for coords in feature['geometry']['coordinates'][0])
         
-        for feature in features:
-            geometry_type = feature['geometry'].get('type', None)
-            coordinates = feature['geometry'].get('coordinates', None)
-            properties = feature.get('properties', None)
+        for inner_ring_coords in feature['geometry']['coordinates'][1:]:
+            inner = ET.SubElement(polygon, 'innerBoundaryIs')
+            inner_ring = ET.SubElement(inner, 'LinearRing')
+            inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
+            inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
-            if geometry_type == 'Point':
-                mypoint = kml.newpoint()
-                mypoint.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
-                mypoint.coords = [coordinates]
+# Convert each GeoJSON feature to KML
+for feature in geojson_data['features']:
+    geojson_feature_to_kml(feature)
 
-            if geometry_type == 'LineString':
-                myline =  kml.newlinestring()
-                myline.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
-                myline.timestamp.when = properties.get('timestamp') or properties.get('Timestamp') or properties.get('TimeStamp')
-                tuples = list(map(tuple, coordinates))
-                myline.coords = tuples
+# Get the KML tree as a string
+kml_string = ET.tostring(kml, encoding='utf-8')
 
-            if geometry_type == 'Polygon':
-                mypoly = kml.newpolygon()
-                mypoly.name = properties.get('name') or properties.get('Name') or properties.get('NAME')
-                tuples = [[tuple(inner_lst) for inner_lst in outer_lst] for outer_lst in coordinates]
-                i=0
-                while i < len(coordinates):
-                    if i==0:
-                        mypoly.outerboundaryis = tuples[i]
-                    else:
-                        mypoly.innerboundaryis = tuples[i]
-                    i+=1        
-                # Polygon: first element of a list of lists of list is the Polygon's outer ring coordinates
-                # simplekml only supports one inner ring, hence the last inner ring becomes the one and only inner ring.
-                # this is a lossy conversion, unfortunately.
-                # use this converter with caution
+# Pretty print the XML with 2-space indentation
+kml_pretty = xml.dom.minidom.parseString(kml_string).toprettyxml(indent='  ')
 
-    print(kml.kml())
-    kml.save(sys.argv[1]+".kml")
+# Print the prettified KML on the console
+print(kml_pretty)
 
-else:
-    print("program aborted")
-    sys.exit()
+# Save the prettified KML to a file
+with open(sys.argv[1]+'.kml', 'w') as output_file:
+    output_file.write(kml_pretty)
