@@ -10,11 +10,6 @@ $python3 kml2geo.py
 $python3 geo2kml.py
 ```
 
-KML to KML: regenerate a minimalist KML file without bells and whistles. gx:Track is not implemented.
-```
-$python3 kml2kml.py
-```
-
 For KML with more complex structure, use GDAL's org2ogr:
 ```
 $sudo apt install gdal-bin
