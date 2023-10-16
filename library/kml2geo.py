@@ -63,13 +63,12 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
         for coord in gx_coord:
             my_xyz = list(map(float, coord.text.split()))  # coord is a list of 3 floats: longitude, latitude, altitude
             list_coords.append(my_xyz)  # collect all the track points
-        list_tuples = [tuple(lst) for lst in list_coords]  # convert to list of tuples before feedint to constructor    
-    basket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
+        list_tuples = [tuple(lst) for lst in list_coords]  # convert list of xyz to list of tuples before invoking constructor    
+        basket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-geojson_string = dumps(FeatureCollection(basket), ensure_ascii=False)
-# defaults to one line print, to save space.
-# use geo2geo.py to do pretty printing.
+geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
+# defaults to one line print, to save space. # use geo2geo.py to do pretty printing.
 
-#print(geojson_string)
+print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( geojson_string )
