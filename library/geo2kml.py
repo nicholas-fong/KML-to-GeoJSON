@@ -1,9 +1,8 @@
 import json
 import sys
-import xml.etree.ElementTree as ET
-import xml.dom.minidom
+from lxml import etree as ET  # pip install lxml
 
-# Load your GeoJSON data from a file
+# Load GeoJSON data from a file
 with open( sys.argv[1]+'.geojson', 'r') as infile:
    geojson_data = json.load ( infile )
 
@@ -21,6 +20,11 @@ def geojson_feature_to_kml(feature):
         if name:
             name_element = ET.SubElement(placemark, 'name')
             name_element.text = name
+
+        description = feature['properties'].get('description', None)
+        if description:
+            desc_element = ET.SubElement(placemark, 'description')
+            desc_element.text = description
 
         # Extract the timestamp in properties field if it exists
         timestamp = feature['properties'].get('timestamp', None)
@@ -52,19 +56,13 @@ def geojson_feature_to_kml(feature):
             inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
             inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
-# Convert each GeoJSON feature to KML
+# Iterate through GeoJSON features and create a KML placemark for each feature
 for feature in geojson_data['features']:
     geojson_feature_to_kml(feature)
 
-# Get the KML tree as a string
-kml_string = ET.tostring(kml, encoding='utf-8')
+# Convert the binary KML object to a string
+kml_string = ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode()
+print(kml_string)
 
-# Pretty print the XML with 2-space indentation
-kml_pretty = xml.dom.minidom.parseString(kml_string).toprettyxml(indent='  ')
-
-# Print the prettified KML on the console
-print(kml_pretty)
-
-# Save the prettified KML to a file
 with open(sys.argv[1]+'.kml', 'w') as output_file:
-    output_file.write(kml_pretty)
+    output_file.write(kml_string)
