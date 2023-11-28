@@ -46,14 +46,14 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
         basket.append(Feature(geometry=LineString(my_line),properties={"name":name,"timestamp":time_stamp} )) 
 
     elif polygon:
-        all_rings = []
+        my_rings = []
         outer_ring = polygon.find('.//kml:outerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
-        all_rings.append(extract_coordinates(outer_ring))
+        my_rings.append(extract_coordinates(outer_ring))
         
         inner_rings = polygon.findall('.//kml:innerBoundaryIs/kml:LinearRing', namespaces=kml_namespace)
         for inner_ring_elem in inner_rings:                
-            all_rings.append(extract_coordinates(inner_ring_elem))
-        basket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
+            my_rings.append(extract_coordinates(inner_ring_elem))
+        basket.append(Feature(geometry=Polygon(my_rings),properties={"name":name})) 
 
     # Look for <gx:Track> <gx:coord>
     gx_track = placemark.find("{http://www.google.com/kml/ext/2.2}Track")
