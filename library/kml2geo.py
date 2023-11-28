@@ -67,7 +67,9 @@ for placemark in root.findall('.//kml:Placemark', namespaces=kml_namespace):
         basket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
 geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
-# defaults to one line print, to save space. # use geo2geo.py to do pretty printing.
+# defaults to multi-line human-readable geojson output
+# comment out above line, uncomment below line to do one-line geojson output, to save space.
+# geojson_string = dumps(FeatureCollection(basket), ensure_ascii=False)
 
 print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
