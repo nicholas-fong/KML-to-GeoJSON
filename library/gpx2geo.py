@@ -1,19 +1,20 @@
 # gpx waypoints are mapped to geoJSON Points
-# gpx routes and gpx tracks are treated equally: mapped to geojson LineString
-# gpx route and gpx track are mapped as a LineString each
-# gpx has no Polygons geometry, therefore GeoJSON file will have no polygons
+# gpx routes mapped to geojson LineString
+# gpx tracks mapped to geojson LineString
+# gpx has no Polygons
 # gpx elevation if exists is added as the third parameter in geometry coordinates
 
 import sys
 import gpxpy
 import gpxpy.gpx
-from geojson import FeatureCollection, Feature, Point, LineString, dumps
+from geojson import FeatureCollection, Feature, Point, LineString
+import json
 
 with open( sys.argv[1]+'.gpx' ) as infile:
     gpx = gpxpy.parse(infile)
 infile.close()    
     
-basket = []    
+features = []    
 
 for waypoint in gpx.waypoints:
     lat = float(waypoint.latitude)
@@ -23,34 +24,31 @@ for waypoint in gpx.waypoints:
     else:
         my_point = Point((lon, lat))
 
-    my_feature = Feature(geometry=my_point, properties={"name":waypoint.name})
-    basket.append(my_feature)    
+    feature = Feature(geometry=my_point, properties={"name":waypoint.name})
+    features.append(feature)    
 
 for route in gpx.routes: 
-    array=[]
+    route_list=[]
     for point in route.points:
         if point.elevation:
-            array.append( (point.longitude, point.latitude, point.elevation) )    
+            route_list.append( (point.longitude, point.latitude, point.elevation) )    
         else:
-            array.append( (point.longitude, point.latitude) ) 
-    my_line = LineString(array)
-    my_feature = Feature(geometry=my_line, properties={"name":route.name})
-    basket.append(my_feature) 
+            route_list.append( (point.longitude, point.latitude) ) 
+    feature = Feature(geometry=LineString(route_list), properties={"name":route.name})
+    features.append(feature) 
 
 for track in gpx.tracks: 
-    varname = track.name
     for segment in track.segments:
-        array=[]
+        track_list=[]
         for point in segment.points:
             if point.elevation:
-                array.append( (point.longitude, point.latitude, point.elevation) )
+                track_list.append( (point.longitude, point.latitude, point.elevation) )
             else:
-                array.append( (point.longitude, point.latitude))
-        my_line = LineString(array)
-        my_feature = Feature(geometry=my_line, properties={"name":track.name})
-        basket.append(my_feature)   
+                track_list.append( (point.longitude, point.latitude))
+        feature = Feature(geometry=LineString(track_list), properties={"name":track.name})
+        features.append(feature)   
 
-geojson_string = dumps(FeatureCollection(basket), indent=2, ensure_ascii=False)
+geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
 print(geojson_string)
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
