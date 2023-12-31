@@ -37,22 +37,21 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
     polygon = placemark.find('kml:Polygon', kml_namespace)
 
     if point:
-        my_point = extract_coordinates(point)
-        features.append(Feature(geometry=Point(my_point[0]), properties={"name":name}))
+        geo_point = extract_coordinates(point)
+        features.append(Feature(geometry=Point(geo_point[0]), properties={"name":name}))
 
     elif line_string:
-        my_line = extract_coordinates(line_string)
-        features.append(Feature(geometry=LineString(my_line),properties={"name":name,"timestamp":time_stamp} )) 
+        geo_line = extract_coordinates(line_string)
+        features.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
 
     elif polygon:
-        my_rings = []
+        all_rings = []
         outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
-        my_rings.append(extract_coordinates(outer_ring))
-        
+        all_rings.append(extract_coordinates(outer_ring))
         inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
         for inner_ring_elem in inner_rings:                
-            my_rings.append(extract_coordinates(inner_ring_elem))
-        features.append(Feature(geometry=Polygon(my_rings),properties={"name":name})) 
+            all_rings.append(extract_coordinates(inner_ring_elem))
+        features.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
 
     # Look in the placemark for <gx:Track>
     gx_track = placemark.find('gx:Track', gx_namespace)
@@ -67,7 +66,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
 
 geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
 # defaults to multi-line human-readable geojson output
-# if one-line geojson is desired, comment out above line, uncomment below line.
+# if a one-line geojson is desired, comment out above line, uncomment below line.
 # geojson_string = json.dumps(FeatureCollection(features), ensure_ascii=False)
 
 #print(geojson_string)
