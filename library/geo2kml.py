@@ -1,15 +1,16 @@
+# Convert GeoJSON Point, LineString and Polygon to KML Placemarks
 import json
 import sys
-from lxml import etree as ET  # pip install lxml
+from lxml import etree as ET     #pip install lxml
 
-# Load GeoJSON data from a file
+# Load GeoJSON data
 with open( sys.argv[1]+'.geojson', 'r') as infile:
    geojson_data = json.load ( infile )
 
 # Create a KML root element
 kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
 
-# Function to convert GeoJSON features to KML
+# A function to convert GeoJSON feature to KML placemark
 def geojson_feature_to_kml(feature):
     placemark = ET.SubElement(kml, 'Placemark')
 
@@ -49,20 +50,20 @@ def geojson_feature_to_kml(feature):
         linear_ring = ET.SubElement(outer, 'LinearRing')
         coordinates = ET.SubElement(linear_ring, 'coordinates')
         coordinates.text = ' '.join(','.join(map(str, coords)) for coords in feature['geometry']['coordinates'][0])
-        
         for inner_ring_coords in feature['geometry']['coordinates'][1:]:
             inner = ET.SubElement(polygon, 'innerBoundaryIs')
             inner_ring = ET.SubElement(inner, 'LinearRing')
             inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
             inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
-# Iterate through GeoJSON features and create a KML placemark for each feature
+# Find GeoJSON features and create a KML placemark for each feature
 for feature in geojson_data['features']:
     geojson_feature_to_kml(feature)
 
 # Convert the binary KML object to a string
 kml_string = ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode()
-print(kml_string)
+
+#print(kml_string)
 
 with open(sys.argv[1]+'.kml', 'w') as output_file:
     output_file.write(kml_string)
