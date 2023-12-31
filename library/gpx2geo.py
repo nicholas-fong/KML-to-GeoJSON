@@ -6,7 +6,6 @@
 
 import sys
 import gpxpy
-import gpxpy.gpx
 from geojson import FeatureCollection, Feature, Point, LineString
 import json
 
