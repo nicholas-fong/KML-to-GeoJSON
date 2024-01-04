@@ -2,29 +2,28 @@
 
 import sys
 import csv
-import gpxpy
-import gpxpy.gpx
+import gpxpy.gpx as hiking
 
-gpx = gpxpy.gpx.GPX()
+gpx = hiking.GPX()                   #create a new GPX object called gpx
 
 track_name = input ("What do you want to call the track ?  ") 
 
-track = gpxpy.gpx.GPXTrack(track_name)  #create a new track
-gpx.tracks.append(track)                #commit the new track
+track = hiking.GPXTrack(track_name)  #create a new track
+gpx.tracks.append(track)             #add track to gpx
 
-segment = gpxpy.gpx.GPXTrackSegment()   #create a new track segment
-track.segments.append(segment)          #commit the new track segment
+segment = hiking.GPXTrackSegment()   #create a new track segment
+track.segments.append(segment)       #add new track segment
 
 with open( sys.argv[1]+'.asc' ) as f:
     readline = csv.reader(f, delimiter=',', quotechar='"')
-    for i in readline:
-        if i:
+    for row in readline:
+        if row:
             # Create a track point
-            track_point = gpxpy.gpx.GPXTrackPoint( float(i[0]), float(i[1])  )
+            track_point = hiking.GPXTrackPoint( float(row[0]), float(row[1])  )
             track_point.elevation = 0.0
             segment.points.append(track_point)
 
-print( gpx.to_xml())
+#print( gpx.to_xml())
 
 with open(sys.argv[1]+'.gpx', 'w') as outfile:
     outfile.write( gpx.to_xml() )
