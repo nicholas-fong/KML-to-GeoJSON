@@ -1,7 +1,6 @@
 # input a CSV (ascii) file and create corresponding GeoJSON file.
 # CSV (asc) file has 3 columns, latitude, longitude and name of the geo location (Point)
 # the third column (name field) can be quoted or unquoted
-# create a .geojson file
 # assume CSV data is WGS84 latitude and longitude
 # quotation marks in third column (name field) are optional and are filtered out, but don't use comma in this field.
 # leading and trailing blanks in name filed are also filtered out
@@ -25,7 +24,7 @@ with open(input_file_path) as infile:
             lat = float(row[0])
             lon = float(row[1])
             elev = 0
-            my_name = row[2].replace('"', '').strip()
+            feature_name = row[2].replace('"', '').strip()
 
             # Create a GeoJSON Point feature
             feature = {
@@ -35,7 +34,7 @@ with open(input_file_path) as infile:
                     "coordinates": [lon, lat, elev]
                 },
                 "properties": {
-                    "name": my_name
+                    "name": feature_name
                 }
             }
 
