@@ -1,4 +1,4 @@
-# Convert GeoJSON Point, LineString and Polygon to KML Placemarks
+# Convert GeoJSON Point, LineString, Polygon and MultipPolygon to KML Point, LineString, Polygon and MultiGeometry placemarks
 import json
 import sys
 from lxml import etree as ET     #pip install lxml
@@ -17,7 +17,7 @@ def geojson_feature_to_kml(feature):
     yes_property = feature.get('properties', None)
     if yes_property:
         # Extract the name property
-        name = feature['properties'].get('name', '')
+        name = feature['properties'].get('name', '') or feature['properties'].get('NAME', '') or feature['properties'].get('Name', '')
         if name:
             name_element = ET.SubElement(placemark, 'name')
             name_element.text = name
@@ -40,11 +40,11 @@ def geojson_feature_to_kml(feature):
         point = ET.SubElement(placemark, 'Point')
         coordinates = ET.SubElement(point, 'coordinates')
         coordinates.text = ','.join(map(str, feature['geometry']['coordinates']))
-    elif feature['geometry']['type'] == 'LineString':
+    if feature['geometry']['type'] == 'LineString':
         linestring = ET.SubElement(placemark, 'LineString')
         coordinates = ET.SubElement(linestring, 'coordinates')
         coordinates.text = ' '.join(','.join(map(str, coords)) for coords in feature['geometry']['coordinates'])
-    elif feature['geometry']['type'] == 'Polygon':
+    if feature['geometry']['type'] == 'Polygon':
         polygon = ET.SubElement(placemark, 'Polygon')
         outer = ET.SubElement(polygon, 'outerBoundaryIs')
         linear_ring = ET.SubElement(outer, 'LinearRing')
@@ -55,8 +55,21 @@ def geojson_feature_to_kml(feature):
             inner_ring = ET.SubElement(inner, 'LinearRing')
             inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
             inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
+    if feature['geometry']['type'] == 'MultiPolygon':
+        multigeometry = ET.SubElement(placemark, 'MultiGeometry')
+        for item in feature['geometry']['coordinates']:
+            polygon = ET.SubElement(multigeometry, 'Polygon')
+            outer = ET.SubElement(polygon, 'outerBoundaryIs')
+            linear_ring = ET.SubElement(outer, 'LinearRing')
+            coordinates = ET.SubElement(linear_ring, 'coordinates')
+            coordinates.text = ' '.join(','.join(map(str, coords)) for coords in item[0] )
+            for inner_ring_coords in item[1:]:
+                inner = ET.SubElement(polygon, 'innerBoundaryIs')
+                inner_ring = ET.SubElement(inner, 'LinearRing')
+                inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
+                inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
-# Find GeoJSON features and create a KML placemark for each feature
+# Find all GeoJSON features and create KML placemark for each feature
 for feature in geojson_data['features']:
     geojson_feature_to_kml(feature)
 
@@ -64,6 +77,5 @@ for feature in geojson_data['features']:
 kml_string = ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode()
 
 #print(kml_string)
-
 with open(sys.argv[1]+'.kml', 'w') as output_file:
     output_file.write(kml_string)
