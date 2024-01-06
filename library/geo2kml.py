@@ -1,11 +1,13 @@
-# Convert GeoJSON Point, LineString, Polygon and MultipPolygon to KML Point, LineString, Polygon and MultiGeometry placemarks
+# Convert GeoJSON Point, LineString, Polygon to kml 
+# MultipPolygon to MultiGeometry kml placemarks
+# for more complex geometries, use ogr2ogr myfile.kml myfile.geojson (sudo apt install gdal-bin)
 import json
 import sys
-from lxml import etree as ET     #pip install lxml
+from lxml import etree as ET     # pip install lxml
 
 # Load GeoJSON data
 with open( sys.argv[1]+'.geojson', 'r') as infile:
-   geojson_data = json.load ( infile )
+   data = json.load ( infile )
 
 # Create a KML root element
 kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
@@ -14,9 +16,9 @@ kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
 def geojson_feature_to_kml(feature):
     placemark = ET.SubElement(kml, 'Placemark')
 
-    yes_property = feature.get('properties', None)
-    if yes_property:
-        # Extract the name property
+    property = feature.get('properties', None)
+    if property:
+        # Extract the name
         name = feature['properties'].get('name', '') or feature['properties'].get('NAME', '') or feature['properties'].get('Name', '')
         if name:
             name_element = ET.SubElement(placemark, 'name')
@@ -27,7 +29,7 @@ def geojson_feature_to_kml(feature):
             desc_element = ET.SubElement(placemark, 'description')
             desc_element.text = description
 
-        # Extract the timestamp in properties field if it exists
+        # Extract the timestamp
         timestamp = feature['properties'].get('timestamp', None)
         if timestamp is None:
             timestamp = feature['properties'].get('TimeStamp', None)
@@ -70,10 +72,10 @@ def geojson_feature_to_kml(feature):
                 inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
 # Find all GeoJSON features and create KML placemark for each feature
-for feature in geojson_data['features']:
+for feature in data['features']:
     geojson_feature_to_kml(feature)
 
-# Convert the binary KML object to a string
+# Convert binary KML object to a string
 kml_string = ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode()
 
 #print(kml_string)
