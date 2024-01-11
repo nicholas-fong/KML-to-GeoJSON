@@ -1,6 +1,7 @@
-# Convert GeoJSON Point, LineString, Polygon to kml 
-# MultipPolygon to MultiGeometry kml placemarks
-# for more complex geometries, use ogr2ogr myfile.kml myfile.geojson (sudo apt install gdal-bin)
+# Convert GeoJSON Point, LineString, Polygon to kml Point, LineString, Polygon placemarks
+# Convert GeoJSON MultiLineString to kml MultiGeometry LineString placemarks
+# Convert GeoJSON MultipPolygon to kml MultiGeometry Polygon placemarks
+# for more complex geometries, use ogr2ogr outfile.kml infile.geojson (sudo apt install gdal-bin)
 import json
 import sys
 from lxml import etree as ET     # pip install lxml
@@ -46,6 +47,12 @@ def geojson_feature_to_kml(feature):
         linestring = ET.SubElement(placemark, 'LineString')
         coordinates = ET.SubElement(linestring, 'coordinates')
         coordinates.text = ' '.join(','.join(map(str, coords)) for coords in feature['geometry']['coordinates'])
+    if feature['geometry']['type'] == 'MultiLineString':
+        multigeometry = ET.SubElement(placemark, 'MultiGeometry')
+        for each_line in feature['geometry']['coordinates']:
+            linestring = ET.SubElement(multigeometry, 'LineString')
+            coordinates = ET.SubElement(linestring, 'coordinates')
+            coordinates.text = ' '.join(','.join(map(str, coords)) for coords in each_line)
     if feature['geometry']['type'] == 'Polygon':
         polygon = ET.SubElement(placemark, 'Polygon')
         outer = ET.SubElement(polygon, 'outerBoundaryIs')
