@@ -1,7 +1,9 @@
+# Convert 6 out of 7 geometry types of GeoJSON: 
 # Convert GeoJSON Point, LineString, Polygon to kml Point, LineString, Polygon placemarks
+# Convert GeoJSON MultiPoint to kml MultiGeometry Point placemarks
 # Convert GeoJSON MultiLineString to kml MultiGeometry LineString placemarks
 # Convert GeoJSON MultipPolygon to kml MultiGeometry Polygon placemarks
-# for more complex geometries, use ogr2ogr outfile.kml infile.geojson (sudo apt install gdal-bin)
+# For GeoJSON GeometryCollection, use ogr2ogr outfile.kml infile.geojson (sudo apt install gdal-bin)
 import json
 import sys
 from lxml import etree as ET     # pip install lxml
@@ -25,6 +27,7 @@ def geojson_feature_to_kml(feature):
             name_element = ET.SubElement(placemark, 'name')
             name_element.text = name
 
+        # Extract properties description
         description = feature['properties'].get('description', None)
         if description:
             desc_element = ET.SubElement(placemark, 'description')
@@ -43,6 +46,13 @@ def geojson_feature_to_kml(feature):
         point = ET.SubElement(placemark, 'Point')
         coordinates = ET.SubElement(point, 'coordinates')
         coordinates.text = ','.join(map(str, feature['geometry']['coordinates']))
+    if  feature['geometry']['type'] == 'MultiPoint':
+        multigeometry = ET.SubElement(placemark, 'MultiGeometry')
+        for each_point in feature['geometry']['coordinates']:
+            point = ET.SubElement(multigeometry, 'Point')
+            coordinates = ET.SubElement(point, 'coordinates')
+            for item in each_point:
+                coordinates.text =  ','.join(map(str,each_point))
     if feature['geometry']['type'] == 'LineString':
         linestring = ET.SubElement(placemark, 'LineString')
         coordinates = ET.SubElement(linestring, 'coordinates')
@@ -83,7 +93,7 @@ for feature in data['features']:
     geojson_feature_to_kml(feature)
 
 # Convert binary KML object to a string
-kml_string = ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode()
+kml_string = ET.tostring(kml, encoding='UTF-8', pretty_print=True, xml_declaration=True ).decode()
 
 #print(kml_string)
 with open(sys.argv[1]+'.kml', 'w') as output_file:
