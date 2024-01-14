@@ -87,18 +87,18 @@ def geojson_feature_to_kml(feature):
                 inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
                 inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
     if feature['geometry']['type'] == 'GeometryCollection':
-        ET.SubElement(placemark, 'MultiGeometry')            
+        multi= ET.SubElement(placemark, 'MultiGeometry')            
         for item in feature['geometry']['geometries']:
             if item['type']=='Point':
-                point = ET.SubElement(placemark, 'Point')
+                point = ET.SubElement(multi, 'Point')
                 coordinates = ET.SubElement(point, 'coordinates')
                 coordinates.text = ','.join(map(str, item['coordinates']))
             if item['type']=='LineString':
-                linestring = ET.SubElement(placemark, 'LineString')
+                linestring = ET.SubElement(multi, 'LineString')
                 coordinates = ET.SubElement(linestring, 'coordinates')
                 coordinates.text = ' '.join(','.join(map(str, coords)) for coords in item['coordinates']) 
             if item['type']=='Polygon':
-                polygon = ET.SubElement(placemark, 'Polygon')
+                polygon = ET.SubElement(multi, 'Polygon')
                 outer = ET.SubElement(polygon, 'outerBoundaryIs')
                 linear_ring = ET.SubElement(outer, 'LinearRing')
                 coordinates = ET.SubElement(linear_ring, 'coordinates')
