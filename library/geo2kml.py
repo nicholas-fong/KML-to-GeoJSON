@@ -50,8 +50,7 @@ def geojson_feature_to_kml(feature):
         for each_point in feature['geometry']['coordinates']:
             point = ET.SubElement(multigeometry, 'Point')
             coordinates = ET.SubElement(point, 'coordinates')
-            for item in each_point:
-                coordinates.text =  ','.join(map(str,each_point))
+            coordinates.text = ','.join(map(str, coords) for coords in each_point)
     if feature['geometry']['type'] == 'LineString':
         linestring = ET.SubElement(placemark, 'LineString')
         coordinates = ET.SubElement(linestring, 'coordinates')
