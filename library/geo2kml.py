@@ -47,10 +47,10 @@ def geojson_feature_to_kml(feature):
         coordinates.text = ','.join(map(str, feature['geometry']['coordinates']))
     if  feature['geometry']['type'] == 'MultiPoint':
         multigeometry = ET.SubElement(placemark, 'MultiGeometry')
-        for each_point in feature['geometry']['coordinates']:
+        for each_coords in feature['geometry']['coordinates']:
             point = ET.SubElement(multigeometry, 'Point')
             coordinates = ET.SubElement(point, 'coordinates')
-            coordinates.text = ','.join(map(str, coords) for coords in each_point)
+            coordinates.text = ','.join(map(str, each_coords))
     if feature['geometry']['type'] == 'LineString':
         linestring = ET.SubElement(placemark, 'LineString')
         coordinates = ET.SubElement(linestring, 'coordinates')
