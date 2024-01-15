@@ -1,4 +1,4 @@
-# Convert KML Point, LineString, Polygon and MultiGeometry to GeoJSON, also handles kml gx:Track and convert to LineString.
+# Convert KML Point, LineString, Polygon  to GeoJSON, also handles kml gx:Track and convert to LineString.
 import sys
 import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, GeometryCollection
@@ -51,39 +51,6 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
         features.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
-    if multigeometry:
-        point = multigeometry.find('kml:Point', kml_namespace)
-        if point is not None: 
-            point_geometry = Point(extract_coordinates(point)[0])
-        else:
-            point_geometry = None
-        line = multigeometry.find('kml:LineString', kml_namespace)
-        if line is not None:      
-            line_geometry = LineString(extract_coordinates(line))
-        else:
-            line_geometry = None
-        polygon = multigeometry.find('kml:Polygon', kml_namespace)
-        all_rings = []
-        if Polygon is not None:
-            outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
-            all_rings.append(extract_coordinates(outer_ring))
-            inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
-            for inner_ring_elem in inner_rings:
-                all_rings.append(extract_coordinates(inner_ring_elem))
-            polygon_geometry = Polygon(all_rings)
-        else:
-            polygon_geometry = None    
-
-        geometries = []
-        if point_geometry is not None:
-            geometries.append(point_geometry)
-        if line_geometry is not None:
-            geometries.append(line_geometry)
-        if polygon_geometry is not None:
-            geometries.append(polygon_geometry)
-        
-        geometry_collection = GeometryCollection(geometries)
-        features.append(Feature(geometry=geometry_collection, properties={"name":name}))
 
     if gx_track:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
@@ -93,6 +60,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
             coordinate_list.append(xyz)  # collect all the gx:Track points
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
         features.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
+
 
 geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
