@@ -2,7 +2,7 @@
 
 KML to GeoJSON:<br>
 
-KML data structure can range from relatively straight forward to more complex namespace extensions. These snippets convert KML placemarks to GeoJSON Point, LineString and Polygon. It can parse KML gx:Track as well. 
+These snippets convert KML placemarks to GeoJSON's Point, LineString, Polygon and GeometryCollection. It can parse KML gx:Track to GeoJSON LineString. 
 
 GeoJSON to KML and KML to GeoJSON:
 ```
@@ -10,13 +10,13 @@ $python3 kml2geo.py
 $python3 geo2kml.py
 ```
 
-For KML with more complex structure, use GDAL's org2ogr:
+For KML with more complex structure, use GDAL's org2ogr or oneline at geojson.io:
 ```
 $sudo apt install gdal-bin
 $ogr2ogr fountains.kml fountains.geojson
 $ogr2ogr fountains.geojson fountains.kml
 ```
-From asc file, create GeoJSON, gpx waypoint, gpx route, gpx track files (using sample.asc)
+From ascii file, create GeoJSON, gpx waypoint, gpx route, gpx track files (see sample.asc)
 ```
 $python3 asc2geo.py sample
 $python3 asc2wpt.py sample
