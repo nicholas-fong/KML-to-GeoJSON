@@ -1,8 +1,7 @@
-# For simple KML geometries: Point, LineString and Polygon
-# For more complex geometries, use ogr2ogr myfile.geojson myfile.kml (sudo apt install gdal-bin)
+# Convert KML Point, LineString, Polygon and MultiGeometry to GeoJSON, also handles kml gx:Track and convert to LineString.
 import sys
 import xml.etree.ElementTree as ET
-from geojson import FeatureCollection, Feature, Point, LineString, Polygon
+from geojson import FeatureCollection, Feature, Point, LineString, Polygon, GeometryCollection
 import json
 
 kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
@@ -10,7 +9,7 @@ gx_namespace =  {'gx': 'http://www.google.com/kml/ext/2.2'}
 
 features=[]
 
-# function to extract coordinates from a geometry element, returns an array of tuples
+# function to extract coordinates from a kml geometry element and returns a list of tuples
 def extract_coordinates(geometry_element):
     coordinates_elem = geometry_element.find('kml:coordinates', kml_namespace)
     if coordinates_elem is not None:
@@ -31,20 +30,19 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
     time_elem = placemark.find('kml:TimeStamp/kml:when', kml_namespace)
     time_stamp = time_elem.text.strip() if time_elem is not None else None
 
-    # Check for geometry types: Point, LineString, Polygon or gx_track
+    # Check for geometry types: Point, LineString, Polygon, MultiGeometry or gx_track
     point = placemark.find('kml:Point', kml_namespace)
     line_string = placemark.find('kml:LineString', kml_namespace)
     polygon = placemark.find('kml:Polygon', kml_namespace)
+    multigeometry = placemark.find('kml:MultiGeometry', kml_namespace)
     gx_track = placemark.find('gx:Track', gx_namespace)
-    
+
     if point:
         geo_point = extract_coordinates(point)
         features.append(Feature(geometry=Point(geo_point[0]), properties={"name":name}))
-
     if line_string:
         geo_line = extract_coordinates(line_string)
         features.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
-
     if polygon:
         all_rings = []
         outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
@@ -53,6 +51,39 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
         features.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
+    if multigeometry:
+        point = multigeometry.find('kml:Point', kml_namespace)
+        if point is not None: 
+            point_geometry = Point(extract_coordinates(point)[0])
+        else:
+            point_geometry = None
+        line = multigeometry.find('kml:LineString', kml_namespace)
+        if line is not None:      
+            line_geometry = LineString(extract_coordinates(line))
+        else:
+            line_geometry = None
+        polygon = multigeometry.find('kml:Polygon', kml_namespace)
+        all_rings = []
+        if Polygon is not None:
+            outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
+            all_rings.append(extract_coordinates(outer_ring))
+            inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
+            for inner_ring_elem in inner_rings:
+                all_rings.append(extract_coordinates(inner_ring_elem))
+            polygon_geometry = Polygon(all_rings)
+        else:
+            polygon_geometry = None    
+
+        geometries = []
+        if point_geometry is not None:
+            geometries.append(point_geometry)
+        if line_geometry is not None:
+            geometries.append(line_geometry)
+        if polygon_geometry is not None:
+            geometries.append(polygon_geometry)
+        
+        geometry_collection = GeometryCollection(geometries)
+        features.append(Feature(geometry=geometry_collection, properties={"name":name}))
 
     if gx_track:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
