@@ -1,4 +1,6 @@
-# Convert KML Point, LineString, Polygon  to GeoJSON, also handles kml gx:Track and convert to LineString.
+# Convert KML Point, LineString, Polygon and MultiGeometry to 
+# GeoJSON Point, LineString, Polygon and GeometryCollection
+# also can handle kml gx:Track and can convert Track to LineString
 import sys
 import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, GeometryCollection
@@ -43,7 +45,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
     if line_string:
         geo_line = extract_coordinates(line_string)
         features.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
-    if polygon:
+    if polygon:  
         all_rings = []
         outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
         all_rings.append(extract_coordinates(outer_ring))
@@ -51,6 +53,28 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
         features.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
+
+    if multigeometry:
+        points = multigeometry.findall('kml:Point', kml_namespace)
+        lines = multigeometry.findall('kml:LineString', kml_namespace)
+        polygons = multigeometry.findall('kml:Polygon', kml_namespace)
+
+        geometries_basket = []
+        for point in points:
+            geometries_basket.append(Point(extract_coordinates(point)[0]))
+        for line in lines:
+            geometries_basket.append(LineString(extract_coordinates(line)))
+        for polygon in polygons:
+            all_rings = []
+            outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
+            all_rings.append(extract_coordinates(outer_ring))
+            inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
+            for inner_ring_elem in inner_rings:
+                all_rings.append(extract_coordinates(inner_ring_elem))
+            geometries_basket.append(Polygon(all_rings))
+        
+        geometry_collected = GeometryCollection(geometries_basket)
+        features.append(Feature(geometry=geometry_collected, properties={"name":name}))
 
     if gx_track:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
@@ -60,7 +84,6 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
             coordinate_list.append(xyz)  # collect all the gx:Track points
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
         features.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
-
 
 geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
