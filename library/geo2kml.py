@@ -1,9 +1,9 @@
 # Convert GeoJSON Point, LineString, Polygon to kml Point, LineString, Polygon placemarks
-# Convert GeoJSON MultiPoint to kml MultiGeometry Point placemark
-# Convert GeoJSON MultiLineString to kml MultiGeometry LineString placemark
-# Convert GeoJSON MultipPolygon to kml MultiGeometry Polygon placemark
-# Convert GeoJSON GeometryCollection Point, LineString and Polygon to kml MultiGeometry placemark
-# For more complex GeoJSON, use ogr2ogr outfile.kml infile.geojson (sudo apt install gdal-bin)
+# Convert GeoJSON MultiPoint to kml-MultiGeometry Point placemark
+# Convert GeoJSON MultiLineString to kml-MultiGeometry LineString placemark
+# Convert GeoJSON MultipPolygon to kml-MultiGeometry Polygon placemark
+# Convert GeoJSON GeometryCollection Point, LineString and Polygon to kml-MultiGeometry placemark
+# For more complex GeoJSON, try ogr2ogr outfile.kml infile.geojson (sudo apt install gdal-bin) or https://geojson.io
 
 import json
 import sys
