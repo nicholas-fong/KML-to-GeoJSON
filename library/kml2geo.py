@@ -81,10 +81,10 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
         bucket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-#geojson_string = json.dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
+geojson_string = json.dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
 # if a one-line geojson is desired, comment out the line above, uncomment the line below.
-geojson_string = json.dumps(FeatureCollection(bucket), ensure_ascii=False)
+#geojson_string = json.dumps(FeatureCollection(bucket), ensure_ascii=False)
 
 #print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
