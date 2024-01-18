@@ -9,7 +9,7 @@ import json
 kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
 gx_namespace =  {'gx': 'http://www.google.com/kml/ext/2.2'}
 
-features=[]
+bucket=[]
 
 # function to extract coordinates from a kml geometry element and returns a list of tuples
 def extract_coordinates(geometry_element):
@@ -32,7 +32,6 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
     time_elem = placemark.find('kml:TimeStamp/kml:when', kml_namespace)
     time_stamp = time_elem.text.strip() if time_elem is not None else None
 
-    # Check for geometry types: Point, LineString, Polygon, MultiGeometry or gx_track
     point = placemark.find('kml:Point', kml_namespace)
     line_string = placemark.find('kml:LineString', kml_namespace)
     polygon = placemark.find('kml:Polygon', kml_namespace)
@@ -41,10 +40,10 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
 
     if point:
         geo_point = extract_coordinates(point)
-        features.append(Feature(geometry=Point(geo_point[0]), properties={"name":name}))
+        bucket.append(Feature(geometry=Point(geo_point[0]), properties={"name":name}))
     if line_string:
         geo_line = extract_coordinates(line_string)
-        features.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
+        bucket.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
     if polygon:  
         all_rings = []
         outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
@@ -52,13 +51,11 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
-        features.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
-
+        bucket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
     if multigeometry:
         points = multigeometry.findall('kml:Point', kml_namespace)
         lines = multigeometry.findall('kml:LineString', kml_namespace)
         polygons = multigeometry.findall('kml:Polygon', kml_namespace)
-
         geometries_basket = []
         for point in points:
             geometries_basket.append(Point(extract_coordinates(point)[0]))
@@ -72,9 +69,8 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
             for inner_ring_elem in inner_rings:
                 all_rings.append(extract_coordinates(inner_ring_elem))
             geometries_basket.append(Polygon(all_rings))
-        
-        geometry_collected = GeometryCollection(geometries_basket)
-        features.append(Feature(geometry=geometry_collected, properties={"name":name}))
+        geometries_collected = GeometryCollection(geometries_basket)
+        bucket.append(Feature(geometry=geometries_collected, properties={"name":name}))
 
     if gx_track:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
@@ -83,12 +79,12 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
             xyz = list(map(float, lonlat.text.split()))  # a list of 3 floats: longitude, latitude, elevation
             coordinate_list.append(xyz)  # collect all the gx:Track points
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
-        features.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
+        bucket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
+#geojson_string = json.dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
-# if a one-line geojson is desired, comment out above line, uncomment the line below.
-# geojson_string = json.dumps(FeatureCollection(features), ensure_ascii=False)
+# if a one-line geojson is desired, comment out the line above, uncomment the line below.
+geojson_string = json.dumps(FeatureCollection(bucket), ensure_ascii=False)
 
 #print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
