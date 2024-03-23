@@ -16,9 +16,12 @@ with open( sys.argv[1]+'.geojson', 'r') as infile:
 # Create a KML root element
 kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
 
+# Create a KML document element
+document = ET.SubElement(kml, 'Document')
+
 # A function to convert GeoJSON feature to KML placemark
 def geojson_feature_to_kml(feature):
-    placemark = ET.SubElement(kml, 'Placemark')
+    placemark = ET.SubElement(document, 'Placemark')
 
     property = feature.get('properties', None)
     if property is not None:
