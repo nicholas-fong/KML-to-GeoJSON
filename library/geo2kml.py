@@ -10,8 +10,15 @@ import sys
 from lxml import etree as ET     # pip install lxml
 
 # Load GeoJSON data
-with open( sys.argv[1]+'.geojson', 'r') as infile:
-   data = json.load ( infile )
+try:
+    with open(sys.argv[1]+'.geojson', 'r') as infile:
+        data = json.load(infile)
+except FileNotFoundError:
+    print(f"Error: File {sys.argv[1]}.geojson not found.")
+    sys.exit(1)
+except json.JSONDecodeError:
+    print("Error: Failed to parse GeoJSON file.")
+    sys.exit(1)
 
 # Create a KML root element
 kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')

@@ -1,6 +1,8 @@
 # Convert KML Point, LineString, Polygon and MultiGeometry to 
 # GeoJSON Point, LineString, Polygon and GeometryCollection
-# also can handle kml gx:Track and can convert Track to LineString
+# Convert kml gx:Track to GeoJSON LineString
+# can also use GDAL's ogr2ogr:   ogr2ogr outfile.geojson infile.kml
+
 import sys
 import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, GeometryCollection
@@ -21,8 +23,17 @@ def extract_coordinates(geometry_element):
         list_of_tuples = [tuple(map(float, item.split(','))) for item in coordinates]
         return list_of_tuples
     
-with open(sys.argv[1]+".kml") as infile:
-    tree = ET.parse(infile)
+try:
+    with open(sys.argv[1]+".kml") as infile:
+        tree = ET.parse(infile)
+    root = tree.getroot()
+except FileNotFoundError:
+    print(f"Error: File {sys.argv[1]}.kml not found.")
+    sys.exit(1)
+except ET.ParseError:
+    print("Error: Failed to parse the KML file.")
+    sys.exit(1)
+
 root = tree.getroot()
 
 # Find all placemark elements
@@ -38,13 +49,13 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
     multigeometry = placemark.find('kml:MultiGeometry', kml_namespace)
     gx_track = placemark.find('gx:Track', gx_namespace)
 
-    if point:
+    if point is not None:
         geo_point = extract_coordinates(point)
         bucket.append(Feature(geometry=Point(geo_point[0]), properties={"name":name}))
-    if line_string:
+    if line_string is not None:
         geo_line = extract_coordinates(line_string)
         bucket.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
-    if polygon:  
+    if polygon is not None:  
         all_rings = []
         outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
         all_rings.append(extract_coordinates(outer_ring))
@@ -52,7 +63,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
         bucket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
-    if multigeometry:
+    if multigeometry is not None:
         points = multigeometry.findall('kml:Point', kml_namespace)
         lines = multigeometry.findall('kml:LineString', kml_namespace)
         polygons = multigeometry.findall('kml:Polygon', kml_namespace)
@@ -83,7 +94,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
 
 geojson_string = json.dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
-# if a one-line geojson is desired, comment out the line above, uncomment the line below.
+# if a one-line geojson is desired, comment out the above line, use the line below.
 #geojson_string = json.dumps(FeatureCollection(bucket), ensure_ascii=False)
 
 #print(geojson_string)
