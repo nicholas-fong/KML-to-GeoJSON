@@ -1,17 +1,33 @@
 # gpx waypoints are mapped to geoJSON Points
-# gpx routes mapped to geojson LineString
-# gpx tracks mapped to geojson LineString
-# Note: gpx has no Polygons
-# gpx elevation if exists is added as the third parameter in geometry coordinates
+# gpx routes are mapped to geojson LineString
+# gpx tracks are mapped to geojson LineString
+# Note: gpx has no Polygons geometry
+# gpx elevation, if exists, is added as the third parameter in geometry coordinates
 
 import sys
+import re
 import gpxpy
 from geojson import FeatureCollection, Feature, Point, LineString
 import json
 
-with open( sys.argv[1]+'.gpx' ) as infile:
-    gpx = gpxpy.parse(infile)
-    
+# remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
+def custom_dumps(obj, **kwargs):
+    def compact_coordinates(match):
+        # Remove newlines and extra spaces within the coordinates array
+        return match.group(0).replace('\n', '').replace(' ', '')
+
+    json_str = json.dumps(obj, **kwargs)
+    # Use a more robust regex to match coordinate arrays
+    json_str = re.sub(r'\[\s*([^\[\]]+?)\s*\]', compact_coordinates, json_str)
+    return json_str
+
+try:
+    with open( sys.argv[1]+'.gpx' ) as infile:
+        gpx = gpxpy.parse(infile)
+except FileNotFoundError:
+    print("file not found")
+    sys.exit(1) 
+
 features = []    
 
 for waypoint in gpx.waypoints:
@@ -19,7 +35,8 @@ for waypoint in gpx.waypoints:
         my_point = Point((waypoint.longitude, waypoint.latitude, int(waypoint.elevation)))
     else:
         my_point = Point((waypoint.longitude, waypoint.latitude))
-    feature = Feature(geometry=my_point, properties={"name":waypoint.name})
+
+    feature = Feature(geometry=my_point, properties={"name":waypoint.name, "sym":waypoint.symbol})
     features.append(feature)    
 
 for route in gpx.routes: 
@@ -43,8 +60,8 @@ for track in gpx.tracks:
         feature = Feature(geometry=LineString(track_list), properties={"name":track.name})
         features.append(feature)   
 
-geojson_string = json.dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
+output_string = custom_dumps(FeatureCollection(features), indent=2, ensure_ascii=False)
 
-#print(geojson_string)
+#print(output_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
-    outfile.write( geojson_string )
+    outfile.write( output_string )
