@@ -1,7 +1,7 @@
 # Convert KML Point, LineString, Polygon and MultiGeometry to 
 # GeoJSON Point, LineString, Polygon and GeometryCollection
 # Convert kml gx:Track to GeoJSON LineString
-# can also use GDAL's ogr2ogr:   ogr2ogr outfile.geojson infile.kml
+# or use GDAL's ogr2ogr:   ogr2ogr outfile.geojson infile.kml
 
 import sys
 import xml.etree.ElementTree as ET
@@ -26,7 +26,6 @@ def extract_coordinates(geometry_element):
 
 
 # remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
-
 def custom_dumps(obj, **kwargs):
     def compact_coordinates(match):
         # Remove newlines and extra spaces within the coordinates array
@@ -36,7 +35,6 @@ def custom_dumps(obj, **kwargs):
     # Use a more robust regex to match coordinate arrays
     json_str = re.sub(r'\[\s*([^\[\]]+?)\s*\]', compact_coordinates, json_str)
     return json_str
-
 
 try:
     with open(sys.argv[1]+".kml") as infile:
