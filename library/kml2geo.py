@@ -7,6 +7,7 @@ import sys
 import xml.etree.ElementTree as ET
 from geojson import FeatureCollection, Feature, Point, LineString, Polygon, GeometryCollection
 import json
+import re
 
 kml_namespace = {'kml': 'http://www.opengis.net/kml/2.2'} 
 gx_namespace =  {'gx': 'http://www.google.com/kml/ext/2.2'}
@@ -22,7 +23,21 @@ def extract_coordinates(geometry_element):
         # convert to a list of tuples
         list_of_tuples = [tuple(map(float, item.split(','))) for item in coordinates]
         return list_of_tuples
-    
+
+
+# remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
+
+def custom_dumps(obj, **kwargs):
+    def compact_coordinates(match):
+        # Remove newlines and extra spaces within the coordinates array
+        return match.group(0).replace('\n', '').replace(' ', '')
+
+    json_str = json.dumps(obj, **kwargs)
+    # Use a more robust regex to match coordinate arrays
+    json_str = re.sub(r'\[\s*([^\[\]]+?)\s*\]', compact_coordinates, json_str)
+    return json_str
+
+
 try:
     with open(sys.argv[1]+".kml") as infile:
         tree = ET.parse(infile)
@@ -92,11 +107,10 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
         bucket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-geojson_string = json.dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
+output_string = custom_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
-# if a one-line geojson is desired, comment out the above line, use the line below.
-#geojson_string = json.dumps(FeatureCollection(bucket), ensure_ascii=False)
+# if a one-line geojson is desired, comment out the above line, edit out ident=2 above
 
 #print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
-    outfile.write( geojson_string )
+    outfile.write( output_string )
