@@ -8,6 +8,7 @@
 import json
 import sys
 from lxml import etree as ET     # pip install lxml
+import xml.dom.minidom as minidom
 
 # Load GeoJSON data
 try:
@@ -118,13 +119,18 @@ def geojson_feature_to_kml(feature):
                     inner_coordinates = ET.SubElement(inner_ring, 'coordinates')
                     inner_coordinates.text = ' '.join(','.join(map(str, coords)) for coords in inner_ring_coords)
 
+# Write the output KML file with pretty print
+def prettify(element):
+    rough_string = ET.tostring(element, encoding='utf-8', xml_declaration=True)
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
+
 # Iterate through GeoJSON features and create KML placemark for each feature
 for feature in data['features']:
     geojson_feature_to_kml(feature)
 
-# Convert binary KML object to a string
-kml_string = ET.tostring(kml, encoding='UTF-8', pretty_print=True, xml_declaration=True ).decode()
+pretty_kml = prettify(kml)
+#print (pretty_kml)
 
-#print(kml_string)
 with open(sys.argv[1]+'.kml', 'w') as output_file:
-    output_file.write(kml_string)
+    output_file.write(pretty_kml)
