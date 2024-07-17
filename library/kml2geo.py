@@ -1,7 +1,9 @@
-# Convert KML Point, LineString, Polygon and MultiGeometry to 
-# GeoJSON Point, LineString, Polygon and GeometryCollection
-# Convert kml gx:Track to GeoJSON LineString
-# or use GDAL's ogr2ogr:   ogr2ogr outfile.geojson infile.kml
+# Convert KML Point, LineString, Polygon and MultiGeometry
+# to  GeoJSON Point, LineString, Polygon and GeometryCollection
+# Convert KML gx:Track to GeoJSON LineString
+# or install gdal-bin:  ogr2ogr outfile.geojson infile.kml
+# Windows: install miniconda
+#   conda install conda-forge::gdal
 
 import sys
 import xml.etree.ElementTree as ET
@@ -24,9 +26,8 @@ def extract_coordinates(geometry_element):
         list_of_tuples = [tuple(map(float, item.split(','))) for item in coordinates]
         return list_of_tuples
 
-
 # remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
-def custom_dumps(obj, **kwargs):
+def pretty_dumps(obj, **kwargs):
     def compact_coordinates(match):
         # Remove newlines and extra spaces within the coordinates array
         return match.group(0).replace('\n', '').replace(' ', '')
@@ -96,7 +97,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         geometries_collected = GeometryCollection(geometries_basket)
         bucket.append(Feature(geometry=geometries_collected, properties={"name":name}))
 
-    if gx_track:
+    if gx_track is not None:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
         coordinate_list=[]
         for lonlat in gx_coordinates:
@@ -105,10 +106,9 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         list_tuples = [tuple(lst) for lst in coordinate_list]  # convert list of floats to list of tuples, feed LineString constructor    
         bucket.append(Feature(geometry=LineString(list_tuples),properties={"name":name,"timestamp":time_stamp} ))
 
-output_string = custom_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
+output_string = pretty_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
-# if a one-line geojson is desired, comment out the above line, edit out ident=2 above
+# if a one-line geojson is desired, delete ident=2
 
-#print(geojson_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( output_string )
