@@ -123,7 +123,7 @@ def geojson_feature_to_kml(feature):
 def prettify(element):
     rough_string = ET.tostring(element, encoding='utf-8', xml_declaration=True)
     reparsed = minidom.parseString(rough_string)
-    return reparsed.toprettyxml(indent="  ")
+    return reparsed.toprettyxml(indent="  ", encoding='utf-8')
 
 # Iterate through GeoJSON features and create KML placemark for each feature
 for feature in data['features']:
@@ -132,5 +132,5 @@ for feature in data['features']:
 pretty_kml = prettify(kml)
 #print (pretty_kml)
 
-with open(sys.argv[1]+'.kml', 'w') as output_file:
+with open(sys.argv[1]+'.kml', 'wb') as output_file:
     output_file.write(pretty_kml)
