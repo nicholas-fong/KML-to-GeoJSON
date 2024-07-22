@@ -65,3 +65,7 @@ def process_line_strings(placemark, name, kml_namespace, gpxbucket):
 process_placemarks(root, kml_namespace, gpxbucket)
 
 print( gpxbucket.to_xml() )
+
+with open(sys.argv[1]+'.gpx', 'w') as output_file:
+    output_file.write( gpxbucket.to_xml() )
+print ( f"File saved as {sys.argv[1]+'.gpx'}")      
