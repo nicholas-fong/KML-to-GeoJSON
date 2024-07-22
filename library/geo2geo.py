@@ -4,11 +4,10 @@ import re
 from geojson import FeatureCollection, Feature
 
 # remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
-def custom_dumps(obj, **kwargs):
+def pretty_dumps(obj, **kwargs):
     def compact_coordinates(match):
         # Remove newlines and extra spaces within the coordinates array
         return match.group(0).replace('\n', '').replace(' ', '')
-
     json_str = json.dumps(obj, **kwargs)
     # Use a more robust regex to match coordinate arrays
     json_str = re.sub(r'\[\s*([^\[\]]+?)\s*\]', compact_coordinates, json_str)
@@ -28,9 +27,10 @@ bucket = []
 for feature in data['features']:
     bucket.append(Feature(geometry=feature['geometry'], properties=feature['properties']))
 
-output_string = custom_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
+output_string = pretty_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 #print(output_string)
 
 with open(sys.argv[1] + '.geojson', 'w', encoding='utf-8') as outfile:
     outfile.write(output_string)
+print ( f"File saved as {sys.argv[1]+'.geojson'}")    
 

@@ -17,6 +17,8 @@ def prettify(element):
 #   rough_string = ET.tostring(element, encoding='utf-8', xml_declaration=True)
 #   reparsed = minidom.parseString(rough_string)
 #   return reparsed.toprettyxml(indent="  ", encoding='utf-8')
+# style 3 KML to string pretty print
+# print( ET.tostring(kml, encoding='utf-8', pretty_print=True, xml_declaration=True ).decode() )
 
 # main()
 with open(sys.argv[1] + ".kml") as infile:

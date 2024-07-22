@@ -65,3 +65,4 @@ output_string = custom_dumps(FeatureCollection(features), indent=2, ensure_ascii
 #print(output_string)
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( output_string )
+print ( f"File saved as {sys.argv[1]+'.geojson'}")    
