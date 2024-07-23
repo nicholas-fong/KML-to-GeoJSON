@@ -26,12 +26,10 @@ def extract_coordinates(geometry_element):
         list_of_tuples = [tuple(map(float, item.split(','))) for item in coordinates]
         return list_of_tuples
 
-# remove newlines and blanks in the coordinates array, for better readibility of the GeoJSON pretty print
 def pretty_dumps(obj, **kwargs):
     def compact_coordinates(match):
         # Remove newlines and extra spaces within the coordinates array
         return match.group(0).replace('\n', '').replace(' ', '')
-
     json_str = json.dumps(obj, **kwargs)
     # Use a more robust regex to match coordinate arrays
     json_str = re.sub(r'\[\s*([^\[\]]+?)\s*\]', compact_coordinates, json_str)
@@ -81,6 +79,8 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         points = multigeometry.findall('kml:Point', kml_namespace)
         lines = multigeometry.findall('kml:LineString', kml_namespace)
         polygons = multigeometry.findall('kml:Polygon', kml_namespace)
+        time_elem = multigeometry.find('kml:TimeStamp/kml:when', kml_namespace)
+        time_stamp = time_elem.text.strip() if time_elem is not None else None
         geometries_basket = []
         for point in points:
             geometries_basket.append(Point(extract_coordinates(point)[0]))
@@ -95,7 +95,7 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
                 all_rings.append(extract_coordinates(inner_ring_elem))
             geometries_basket.append(Polygon(all_rings))
         geometries_collected = GeometryCollection(geometries_basket)
-        bucket.append(Feature(geometry=geometries_collected, properties={"name":name}))
+        bucket.append(Feature(geometry=geometries_collected, properties={"name":name,"timestamp":time_stamp}))
 
     if gx_track is not None:
         gx_coordinates = gx_track.findall('gx:coord', gx_namespace)
@@ -108,7 +108,8 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
 
 output_string = pretty_dumps(FeatureCollection(bucket), indent=2, ensure_ascii=False)
 # defaults to multi-line, human-readable geojson output
-# if a one-line geojson is desired, delete ident=2
+# if a one-line geojson is desired, delete ident=2 or run geo2geo-compact.py
 
 with open(sys.argv[1]+'.geojson', 'w') as outfile:
     outfile.write( output_string )
+print ( f"File saved as {sys.argv[1]+'.geojson'}")    
