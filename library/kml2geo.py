@@ -2,8 +2,6 @@
 # to  GeoJSON Point, LineString, Polygon and GeometryCollection
 # Convert KML gx:Track to GeoJSON LineString
 # or install gdal-bin:  ogr2ogr outfile.geojson infile.kml
-# Windows: install miniconda
-#   conda install conda-forge::gdal
 
 import sys
 import xml.etree.ElementTree as ET
