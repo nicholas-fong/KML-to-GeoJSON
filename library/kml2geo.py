@@ -48,15 +48,15 @@ root = tree.getroot()
 
 # Find all placemark elements
 for placemark in root.findall('.//kml:Placemark', kml_namespace):
-    name_elem = placemark.find('kml:name', kml_namespace)
+    name_elem = placemark.find('.kml:name', kml_namespace)
     name = name_elem.text.strip() if name_elem is not None else 'Unnamed'
-    time_elem = placemark.find('kml:TimeStamp/kml:when', kml_namespace)
+    time_elem = placemark.find('.kml:TimeStamp/kml:when', kml_namespace)
     time_stamp = time_elem.text.strip() if time_elem is not None else None
 
-    point = placemark.find('kml:Point', kml_namespace)
-    line_string = placemark.find('kml:LineString', kml_namespace)
-    polygon = placemark.find('kml:Polygon', kml_namespace)
-    multigeometry = placemark.find('kml:MultiGeometry', kml_namespace)
+    point = placemark.find('.kml:Point', kml_namespace)
+    line_string = placemark.find('.kml:LineString', kml_namespace)
+    polygon = placemark.find('.kml:Polygon', kml_namespace)
+    multigeometry = placemark.find('.kml:MultiGeometry', kml_namespace)
     gx_track = placemark.find('gx:Track', gx_namespace)
 
     if point is not None:
@@ -67,17 +67,17 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
         bucket.append(Feature(geometry=LineString(geo_line),properties={"name":name,"timestamp":time_stamp} )) 
     if polygon is not None:  
         all_rings = []
-        outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
+        outer_ring = polygon.find('.kml:outerBoundaryIs/.kml:LinearRing', kml_namespace)
         all_rings.append(extract_coordinates(outer_ring))
-        inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
+        inner_rings = polygon.findall('.kml:innerBoundaryIs/.kml:LinearRing', kml_namespace)
         for inner_ring_elem in inner_rings:                
             all_rings.append(extract_coordinates(inner_ring_elem))
         bucket.append(Feature(geometry=Polygon(all_rings),properties={"name":name})) 
     if multigeometry is not None:
-        points = multigeometry.findall('kml:Point', kml_namespace)
-        lines = multigeometry.findall('kml:LineString', kml_namespace)
-        polygons = multigeometry.findall('kml:Polygon', kml_namespace)
-        time_elem = multigeometry.find('kml:TimeStamp/kml:when', kml_namespace)
+        points = multigeometry.findall('.kml:Point', kml_namespace)
+        lines = multigeometry.findall('.kml:LineString', kml_namespace)
+        polygons = multigeometry.findall('.kml:Polygon', kml_namespace)
+        time_elem = multigeometry.find('.kml:TimeStamp/kml:when', kml_namespace)
         time_stamp = time_elem.text.strip() if time_elem is not None else None
         geometries_basket = []
         for point in points:
@@ -86,9 +86,9 @@ for placemark in root.findall('.//kml:Placemark', kml_namespace):
             geometries_basket.append(LineString(extract_coordinates(line)))
         for polygon in polygons:
             all_rings = []
-            outer_ring = polygon.find('kml:outerBoundaryIs/kml:LinearRing', kml_namespace)
+            outer_ring = polygon.find('.kml:outerBoundaryIs/.kml:LinearRing', kml_namespace)
             all_rings.append(extract_coordinates(outer_ring))
-            inner_rings = polygon.findall('kml:innerBoundaryIs/kml:LinearRing', kml_namespace)
+            inner_rings = polygon.findall('.kml:innerBoundaryIs/.kml:LinearRing', kml_namespace)
             for inner_ring_elem in inner_rings:
                 all_rings.append(extract_coordinates(inner_ring_elem))
             geometries_basket.append(Polygon(all_rings))
