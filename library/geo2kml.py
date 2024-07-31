@@ -16,7 +16,7 @@ except json.JSONDecodeError:
     print("Error: Failed to parse GeoJSON file.")
     sys.exit(1)
 
-# Create a KML root element
+# Create a KML root element and document folder
 kml = ET.Element('kml', xmlns=NAMESPACE)
 document = ET.SubElement(kml, 'Document')
 
@@ -126,7 +126,6 @@ for feature in data.get('features', []):
 # Output the KML file
 pretty_kml = prettify(kml)
 output_file_path = sys.argv[1] + '.kml'
-with open(output_file_path, 'w') as output_file:
-    output_file.write(pretty_kml)
-
+with open(output_file_path, 'w') as outfile:
+    outfile.write(pretty_kml)
 print(f"File saved as {output_file_path}")
