@@ -2,6 +2,8 @@
 # to  GeoJSON Point, LineString, Polygon and GeometryCollection
 # Convert KML gx:Track to GeoJSON LineString
 # or install gdal-bin:  ogr2ogr outfile.geojson infile.kml
+# or Windows: install miniconda
+#    conda install conda-forge::gdal  open anacoda command prompt, cd to geojson/kml source folder
 
 import sys
 import xml.etree.ElementTree as ET
@@ -36,7 +38,6 @@ def pretty_dumps(obj, **kwargs):
 try:
     with open(sys.argv[1]+".kml") as infile:
         tree = ET.parse(infile)
-    root = tree.getroot()
 except FileNotFoundError:
     print(f"Error: File {sys.argv[1]}.kml not found.")
     sys.exit(1)
@@ -46,7 +47,6 @@ except ET.ParseError:
 
 root = tree.getroot()
 
-# Find all placemark elements
 for placemark in root.findall('.//kml:Placemark', kml_namespace):
     name_elem = placemark.find('.kml:name', kml_namespace)
     name = name_elem.text.strip() if name_elem is not None else 'Unnamed'
